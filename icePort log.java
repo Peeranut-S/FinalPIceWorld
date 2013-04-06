@@ -1,5 +1,4 @@
 import java.awt.BorderLayout;
-<<<<<<< HEAD
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -41,7 +40,7 @@ public class icePort extends JFrame {
 	private JMenuBar menuBar;
 	private JMenu function;
 	private JMenuItem help,about,quit, REFRESH_INTERVAL_item;
-
+        private JButton btnLogIn;
 	// Yelling attributes
 	private TextArea yellArea;
 	private JButton yellButton;
@@ -104,7 +103,7 @@ public class icePort extends JFrame {
     springlayout.putConstraint(SpringLayout.EAST, passwordField, -5, SpringLayout.EAST, comboBox);
     getContentPane().add(passwordField);
     
-    JButton btnLogIn = new JButton("Log In");
+    btnLogIn = new JButton("Log In");
     springlayout.putConstraint(SpringLayout.NORTH, btnLogIn, 26, SpringLayout.SOUTH, passwordField);
     springlayout.putConstraint(SpringLayout.WEST, btnLogIn, 0, SpringLayout.WEST, comboBox);
     getContentPane().add(btnLogIn);
@@ -323,10 +322,10 @@ public class icePort extends JFrame{
 
 	}
 
-
+*/
 
 	private void addListener() {
->>>>>>> e4cf3f89af2ea9ca12815efe3b1cae9796986af5
+
 
 		//quitting the program
 		quit.addActionListener(new MyHandler());
@@ -334,10 +333,12 @@ public class icePort extends JFrame{
 		about.addActionListener(new MyHandler());
 		REFRESH_INTERVAL_item.addActionListener(new MyHandler());
 		yellButtonddActionListener(new MyHandler());
+		btnLogIn.addActionListener(new MyHandler());
+
 
 	}
 
-<<<<<<< HEAD
+
 class MyHandler implements ActionListener{
 =======
 	class MyHandler extends JComponent implements ActionListener{
@@ -354,18 +355,22 @@ class MyHandler implements ActionListener{
 				aboutDialog.setVisible(true);
 			}
 
+
+			if(e.getSource()==btnLogIn){
+				// if the password is right
+				new splashScr();
+			}
+
 			if(e.getSource()== help){
-<<<<<<< HEAD
+
 				JDialog helpDialog = new JDialog();	
-=======
+
 				
 				/*JDialog helpDialog = new JDialog();	
->>>>>>> e4cf3f89af2ea9ca12815efe3b1cae9796986af5
+
 				helpDialog.setBounds(10,10,300,300);
 				helpDialog.setModal(true);
-				helpDialog.setLocationRelativeTo(null);
-				helpDialog.setVisible(true);
-<<<<<<< HEAD
+
 				}
 
 		/*	if(e.getSource()== REFRESH_INTERVAL_item){
@@ -509,12 +514,12 @@ class MyHandler implements ActionListener{
 					combo.addItem(i); 	// adding the elements of the combo			
 				}	
 
->>>>>>> e4cf3f89af2ea9ca12815efe3b1cae9796986af5
+
 				combo.addActionListener(new ActionListener()
 				{
 					public void actionPerformed(ActionEvent e)
 					{
-<<<<<<< HEAD
+
 						int new_value= (Integer) combo.getSelectedItem();
 						StateFetching.setREFRESH_INTERVAL(new_value);
 					}
@@ -525,8 +530,8 @@ class MyHandler implements ActionListener{
 				panel.add(combo, BorderLayout.CENTER);
 				RIframe.setVisible(true);
 			}	
-	//	}
-=======
+		}
+
 						refresh_interval= (Integer) combo.getSelectedItem();
 						StateFetching statefetching= new StateFetching();
 						statefetching.setREFRESH_INTERVAL(refresh_interval);
@@ -548,8 +553,6 @@ class MyHandler implements ActionListener{
 		}
 
 
-=======
+
 	}
 }
-
->>>>>>> e4cf3f89af2ea9ca12815efe3b1cae9796986af5
