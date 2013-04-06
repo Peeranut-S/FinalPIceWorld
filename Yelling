@@ -1,0 +1,67 @@
+import java.awt.*;
+import java.util.Calendar;
+import java.util.LinkedList;
+import java.awt.Graphics;
+import javax.swing.*;
+
+
+public class Yelling  {
+
+  /**
+	 * 
+	 * An Ice-tizen can yell (for at most 10 characters for each message). 
+	 * The message of each yelling is shown as a nice big animation of whose duration is at least 5 seconds. 
+	 * The animation covers at least 50% of the area of the view of the ICE Port program.
+	 * When the active Ice-tizen yells, the message can be seen immediately in the ICE Port instance hosting the active Ice-tizen
+	 * When other Ice-tizens yell, the messages will be shown immediately after the next fetching of the ICE World states.
+	 * If multiple yelling overlaps, the newer ones are shown on top of the older ones.
+	 * Every time the active Ice-tizen yells, the yelling and its details must be reported to the ICEWorldImmigration instance
+	 * 
+	 * 
+	 * */
+	
+	// to add in the ice_port
+	private long yell_start;
+	protected String text;
+	protected LinkedList<String> yell_list=new LinkedList<String>();
+	int size;
+	
+	public Yelling(String text) {
+		this.yell_start= System.currentTimeMillis();
+		this.text=text;
+		String yell_time_string=String.valueOf(yell_start);
+		yell_list.add(yell_time_string);
+		size= yell_list.size();	
+		
+		int counter=0;
+		for(int i =0; i<size;i++){
+			if(yell_start- Integer.parseInt(yell_list.get(i))>5000){
+				counter++;
+			}
+		}
+		
+		if (counter==size){
+			for(int j =0; j<size;j++){
+				yell_list.remove(j);
+				}
+		}
+		
+		size= yell_list.size();	
+	}
+		
+		public int getNBYells() {
+			return(size);
+		}
+		
+	
+	
+	
+	}
+
+
+	
+	
+	
+	
+	
+}
