@@ -48,6 +48,11 @@ public class Yelling  {
 		
 		size= yell_list.size();	
 	}
+
+	public String getText() {
+		return(text);
+	}
+
 		
 		public int getNBYells() {
 			return(size);
