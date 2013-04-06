@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.TextArea;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -41,6 +42,10 @@ public class icePort extends JFrame {
 	private JMenu function;
 	private JMenuItem help,about,quit, REFRESH_INTERVAL_item;
 
+	// Yelling attributes
+	private TextArea yellArea;
+	private JButton yellButton;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -62,7 +67,7 @@ public class icePort extends JFrame {
 	 */
 	public icePort() {
 	BufferedImage myImage;
-		
+
     try {
 		myImage = ImageIO.read(new File("/Users/ZethaRia/Desktop/PC/ice3.jpg"));
 	this.setContentPane(this.new ImagePanel(myImage));
@@ -118,38 +123,62 @@ public class icePort extends JFrame {
     getContentPane().add(lblPassword);
     setSize(1200,700);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		
+
+
 		 menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-		
+
 		 function = new JMenu("File");
 		menuBar.add(function);
-		
+
 		 REFRESH_INTERVAL_item = new JMenuItem("Refresh Interval");
 		function.add(REFRESH_INTERVAL_item);
-		
+
 		 quit = new JMenuItem("Exit");
 		function.add(quit);
-		
+
 		 about = new JMenu("About");
 		menuBar.add(about);
-		
+
 		 help = new JMenu("Help (F1)");
 		menuBar.add(help);
 		
-		
+        // components used to yell
+        yellArea= new TextArea("Write your yell");
+    	yellButton= new JButton("Yell!");
+    	yellArea.setVisible(true);
+    	yellButton.setVisible(true);
+
+
 	}
 
 	class ImagePanel extends JComponent {
 		  private Image image;
-		  
+
 		public ImagePanel(Image image) {
 		 this.image = image;}
 		@Override
-		
+
 		protected void paintComponent(Graphics g){
 			g.drawImage(image,0,0,null);
+			yellButton.addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+
+					// Action performed to yell:
+					
+						String text=textArea.getText();
+						textArea.setText("Write your yell!");
+						Yelling yell= new Yelling(text);
+						int nb_yells= yell.getNBYells();
+					
+						while(yell.yell_start-5000>=0 ){
+							g.setColor(Color.BLACK); 
+							g.fillOval(200,200,20=nb_yells*10,20=nb_yells*10);
+				}
+			});
+			
 		}
 }
 	/*private void addListener() {
@@ -300,6 +329,7 @@ public class icePort extends JFrame{
 		help.addActionListener(new MyHandler());
 		about.addActionListener(new MyHandler());
 		REFRESH_INTERVAL_item.addActionListener(new MyHandler());
+		yellButtonddActionListener(new MyHandler());
 
 	}
 
@@ -452,26 +482,29 @@ class MyHandler implements ActionListener{
 				new_dialog.setSize(500,150);
 				new_dialog.setLocation(500,500);
 				new_dialog.add(label);
-				
+
 				}
+
+
+
 
 			if(e.getSource()== REFRESH_INTERVAL_item){
 				// Open an internal frame when the item is selected :
 				JInternalFrame RIframe = new JInternalFrame("Setting the refresh interval", true, true, true, true);	
 				RIframe.setBounds(500,100,300,300);
-			
+
 				JPanel panel= (JPanel) RIframe.getContentPane();
-				
+
 				// In the frame, we can select the refresh interval via a combo box : 
 				JTextArea text = new JTextArea("Select the refresh interval of the ICE World :"); 
 				final JComboBox combo = new JComboBox();
 				combo.setBounds(new Rectangle(2, 2, 2, 2)); 
-				
-				
+
+
 				for(int i=1; i<=10; i++){
 					combo.addItem(i); 	// adding the elements of the combo			
 				}	
-				
+
 >>>>>>> e4cf3f89af2ea9ca12815efe3b1cae9796986af5
 				combo.addActionListener(new ActionListener()
 				{
@@ -495,10 +528,10 @@ class MyHandler implements ActionListener{
 						statefetching.setREFRESH_INTERVAL(refresh_interval);
 					}
 				});
-				
+
 				combo.setSelectedItem(refresh_interval);
-				
-				
+
+
 				RIframe.setLayout( new GridLayout(2,1,5,5));
 
 				panel.add(text, BorderLayout.CENTER);
@@ -521,7 +554,7 @@ class MyHandler implements ActionListener{
 	{
 		public void actionPerformed(ActionEvent e)
 		{
-			
+
 			System.exit(0);
 		}
 		});
