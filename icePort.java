@@ -28,9 +28,14 @@ import javax.swing.KeyStroke;
 public class icePort extends JFrame{
 	JMenuBar menuBar;
 	JMenu function;
-	JMenuItem help,about,quit, REFRESH_INTERVAL_item;
+	JMenuItem help,about,quit;
 	JDesktopPane desktop;
 	static int offsetMultiplier = 0;
+	
+	// refreshing states attributes
+	int refresh_interval=1;
+	JMenuItem REFRESH_INTERVAL_item;
+	StateFetching statefetching;
 
 	public icePort(){
 		super("IcePort");
@@ -42,6 +47,7 @@ public class icePort extends JFrame{
 		setJMenuBar(setGUI());
 		setPreferredSize(screensize);
 		addListener();
+		statefetching= new StateFetching();
 
 		desktop.setDragMode(JDesktopPane.LIVE_DRAG_MODE); 
 	}
@@ -264,36 +270,42 @@ public class icePort extends JFrame{
 
 			if(e.getSource()== REFRESH_INTERVAL_item){
 				// Open an internal frame when the item is selected :
-				JInternalFrame RIframe = new JInternalFrame();	
-				RIframe.setBounds(10,10,300,300);
+				JInternalFrame RIframe = new JInternalFrame("Setting the refresh interval", true, true, true, true);	
+				RIframe.setBounds(500,100,300,300);
+			
 				JPanel panel= (JPanel) RIframe.getContentPane();
-
+				
 				// In the frame, we can select the refresh interval via a combo box : 
 				JTextArea text = new JTextArea("Select the refresh interval of the ICE World :"); 
-				DefaultComboBoxModel mdc = new DefaultComboBoxModel(); 
 				final JComboBox combo = new JComboBox();
-				combo.setModel(mdc);
-				combo.setBounds(new Rectangle(19, 36, 129, 23)); 
-
+				combo.setBounds(new Rectangle(2, 2, 2, 2)); 
+				
+				
 				for(int i=1; i<=10; i++){
-				mdc.addElement(""+i); 
-				combo.addItem(""+i); 	// adding the elements of the combo			
+					combo.addItem(i); 	// adding the elements of the combo			
 				}	
-
+				
 				combo.addActionListener(new ActionListener()
 				{
 					public void actionPerformed(ActionEvent e)
 					{
-						int new_value= (Integer) combo.getSelectedItem();
-						StateFetching.setREFRESH_INTERVAL(new_value);
+						refresh_interval= (Integer) combo.getSelectedItem();
+						statefetching.setREFRESH_INTERVAL(refresh_interval);
 					}
 				});
-
+				
+				combo.setSelectedItem(refresh_interval);
+				
+				
+				RIframe.setLayout( new GridLayout(2,1,5,5));
 
 				panel.add(text, BorderLayout.CENTER);
 				panel.add(combo, BorderLayout.CENTER);
+				panel.setVisible(true);
+				Container c = getContentPane();
+				c.add(RIframe);
 				RIframe.setVisible(true);
-			}	
+			}		
 		}
 
 
