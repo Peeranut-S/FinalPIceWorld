@@ -1,8 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -35,8 +33,9 @@ public class icePort extends JFrame{
 	static int offsetMultiplier = 0;
 	
 	// refreshing states attributes
-	int refresh_interval=10000;
+	int refresh_interval=1;
 	JMenuItem REFRESH_INTERVAL_item;
+	StateFetching statefetching;
 
 	public icePort(){
 		super("IcePort");
@@ -48,6 +47,7 @@ public class icePort extends JFrame{
 		setJMenuBar(setGUI());
 		setPreferredSize(screensize);
 		addListener();
+		statefetching= new StateFetching();
 
 		desktop.setDragMode(JDesktopPane.LIVE_DRAG_MODE); 
 	}
@@ -79,10 +79,9 @@ public class icePort extends JFrame{
 		function.addSeparator();
 		function.add(about);
 		function.addSeparator();
-		function.add(REFRESH_INTERVAL_item);
-		function.addSeparator();
 		function.add(quit);
-		
+		function.add(REFRESH_INTERVAL_item);
+
 		help.setAccelerator(KeyStroke.getKeyStroke("F1"));
 
 		menuBar.add(function);
@@ -291,7 +290,6 @@ public class icePort extends JFrame{
 					public void actionPerformed(ActionEvent e)
 					{
 						refresh_interval= (Integer) combo.getSelectedItem();
-						StateFetching statefetching= new StateFetching();
 						statefetching.setREFRESH_INTERVAL(refresh_interval);
 					}
 				});
@@ -315,4 +313,3 @@ public class icePort extends JFrame{
 
 	}
 }
-

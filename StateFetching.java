@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public class StateFetching extends JFrame implements Runnable {
 
-  protected Thread thread;
+	protected Thread thread;
 	protected static int REFRESH_INTERVAL;
 	private File file;
 	
@@ -23,25 +23,18 @@ public class StateFetching extends JFrame implements Runnable {
 		try{
 		file = new File("Refreshed_States.txt"); 
 		file.createNewFile();  
-		Desktop.getDesktop().open(file); 
 		} catch(IOException e){};
-		/*
-		if(thread==null){
-			thread=new Thread(this);
-			System.out.println("dans le constructeur");
-			thread.start();
-			System.out.println("dans le constructeur apres le start");
-		}*/
-	}
-	
-	public void init() throws IOException{
+		
 		if(thread==null){
 			thread=new Thread(this);
 			System.out.println("dans le constructeur");
 			thread.start();
 			System.out.println("dans le constructeur apres le start");
 		}
-		/*
+	}
+	/*
+	public void init() throws IOException{
+	
 		thread=null;
 		REFRESH_INTERVAL=10000;	
 		System.out.println("dans le init");
@@ -51,13 +44,15 @@ public class StateFetching extends JFrame implements Runnable {
 		file = new File("Refreshed_States.txt"); 
 		file.createNewFile();  
 		Desktop.getDesktop().open(file); 
-		} catch(IOException e){}; */
+		} catch(IOException e){};
 	}
-
+*/
 
 
 	public void run(){
 		System.out.println("dans le run, au debut");
+
+       // Desktop.getDesktop().open(new File("Refreshed_States.txt"));
 		while(Thread.currentThread()==thread){
 			StateFetching refresh = new StateFetching();
 			try {
@@ -142,7 +137,6 @@ public class StateFetching extends JFrame implements Runnable {
 			        
 			        	System.out.println(response);
 			        
-			        //Desktop.getDesktop().open(new File("Refreshed_States.txt"));
 			        in.close();
 			        output.close();
 			        break;
