@@ -77,11 +77,13 @@ public class icePort extends JFrame {
 		  }
     setBounds(100, 100, 1300, 800);
 
+    //setting layout
     getContentPane().setBackground(new Color(204, 255, 255));
     SpringLayout springlayout = new SpringLayout();
     getContentPane().setLayout(springlayout);
     
-    JComboBox comboBox = new JComboBox();
+   //setting GUI
+   JComboBox comboBox = new JComboBox();
     springlayout.putConstraint(SpringLayout.NORTH, comboBox, 236, SpringLayout.NORTH, getContentPane());
     springlayout.putConstraint(SpringLayout.WEST, comboBox, -643, SpringLayout.EAST, getContentPane());
     springlayout.putConstraint(SpringLayout.SOUTH, comboBox, 278, SpringLayout.NORTH, getContentPane());
@@ -122,7 +124,8 @@ public class icePort extends JFrame {
     springlayout.putConstraint(SpringLayout.WEST, lblPassword, 0, SpringLayout.WEST, lblUsername);
     getContentPane().add(lblPassword);
     setSize(1200,700);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	
+	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //allow closing of programme
 
 
 		 menuBar = new JMenuBar();
@@ -142,6 +145,7 @@ public class icePort extends JFrame {
 
 		 help = new JMenu("Help (F1)");
 		menuBar.add(help);
+		addListener();
 		
         // components used to yell
         yellArea= new TextArea("Write your yell");
@@ -520,7 +524,7 @@ class MyHandler implements ActionListener{
 				panel.add(text, BorderLayout.CENTER);
 				panel.add(combo, BorderLayout.CENTER);
 				RIframe.setVisible(true);
-			}	*/
+			}	
 	//	}
 =======
 						refresh_interval= (Integer) combo.getSelectedItem();
@@ -542,25 +546,8 @@ class MyHandler implements ActionListener{
 				RIframe.setVisible(true);
 			}		
 		}
->>>>>>> e4cf3f89af2ea9ca12815efe3b1cae9796986af5
 
 
-
-
-<<<<<<< HEAD
-//}
-	private void addListener() {
-	quit.addActionListener(new ActionListener()
-	{
-		public void actionPerformed(ActionEvent e)
-		{
-
-			System.exit(0);
-		}
-		});
-	}
-
-}
 =======
 	}
 }
