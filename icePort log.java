@@ -38,9 +38,11 @@ public class icePort extends JFrame {
 	private JTextField textField;
 	private JPasswordField passwordField;
 	private JMenuBar menuBar;
-	private JMenu function,help,about;
-	private JMenuItem quit, REFRESH_INTERVAL_item;
-        private JButton btnLogIn;
+	private JMenu function;
+    
+	private JMenuItem quit, REFRESH_INTERVAL_item,help,about;
+	private JButton btnLogIn;
+	
 	// Yelling attributes
 	private TextArea yellArea;
 	private JButton yellButton;
@@ -126,24 +128,29 @@ public class icePort extends JFrame {
 	
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //allow closing of programme
 
-
-		 menuBar = new JMenuBar();
+ menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-
+		
 		 function = new JMenu("File");
 		menuBar.add(function);
-
+		
 		 REFRESH_INTERVAL_item = new JMenuItem("Refresh Interval");
 		function.add(REFRESH_INTERVAL_item);
-
+		
 		 quit = new JMenuItem("Exit");
 		function.add(quit);
-
-		 about = new JMenu("About");
-		menuBar.add(about);
-
-		 help = new JMenu("Help (F1)");
-		menuBar.add(help);
+		
+		JMenu mntmAboutWindow = new JMenu("About");
+		menuBar.add(mntmAboutWindow);
+		
+		about = new JMenuItem("About window");
+		mntmAboutWindow.add(about);
+		
+		JMenu mntmHelpWindow  = new JMenu("Help");
+		menuBar.add(mntmHelpWindow );
+		
+		help = new JMenuItem("Help Window(F1)");
+		mntmHelpWindow .add(help);
 		addListener();
 		
         // components used to yell
