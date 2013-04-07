@@ -38,8 +38,8 @@ public class icePort extends JFrame {
 	private JTextField textField;
 	private JPasswordField passwordField;
 	private JMenuBar menuBar;
-	private JMenu function;
-	private JMenuItem help,about,quit, REFRESH_INTERVAL_item;
+	private JMenu function,help,about;
+	private JMenuItem quit, REFRESH_INTERVAL_item;
         private JButton btnLogIn;
 	// Yelling attributes
 	private TextArea yellArea;
@@ -220,7 +220,15 @@ class MyHandler implements ActionListener{
 
 			if(e.getSource()==btnLogIn){
 				// if the password is right
-				new splashScr();
+				try {
+                    new splashScr().initUI();
+                    
+                } catch (MalformedURLException d) {
+                    d.printStackTrace();
+                }
+				setVisible(false);
+				
+				//open up iceWorld 
 			}
 
 			if(e.getSource()== help){
