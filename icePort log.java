@@ -39,6 +39,11 @@ public class icePort extends JFrame {
 	private JPasswordField passwordField;
 	private JMenuBar menuBar;
 	private JMenu function;
+	
+	//panel for help
+	private JPanel panel1;
+	 private JPanel panel2;
+	 private JPanel panel3;
     
 	private JMenuItem quit, REFRESH_INTERVAL_item,help,about;
 	private JButton btnLogIn;
@@ -206,7 +211,50 @@ public class icePort extends JFrame {
 
 
 	}
+//create panel for the help
+			public void createPage1()
+			 {
+			panel1 = new JPanel();
+			 panel1.setLayout( null );
+			 JLabel label1 = new JLabel( "Logging In/Out" );
+			label1.setBounds( 10, 15, 150, 20 );
+			 panel1.add( label1 );
+			 }
 
+			 public void createPage2()
+			 {
+				 panel2 = new JPanel();
+			 panel2.setLayout( new BorderLayout() );
+
+			 panel2.add( new JButton( "North" ), BorderLayout.NORTH );
+			 panel2.add( new JButton( "South" ), BorderLayout.SOUTH );
+			 panel2.add( new JButton( "East" ), BorderLayout.EAST );
+			 panel2.add( new JButton( "West" ), BorderLayout.WEST );
+			panel2.add( new JButton( "Center" ), BorderLayout.CENTER );
+			 }
+
+			 public void createPage3()
+			 {
+			 panel3= new JPanel();
+			 panel3.setLayout( new GridLayout(3, 2,5,5));
+
+			 panel3.add( new JLabel( "Field 1:" ) );
+			 panel3.add( new TextArea() );
+			panel3.add( new JLabel( "Field 2:" ) );
+			panel3.add( new TextArea() );
+			panel3.add( new JLabel( "Field 3:" ) );
+			 panel3.add( new TextArea() );
+			 }
+	private void addListener() {
+
+		//quitting the program
+		quit.addActionListener(new MyHandler());
+		help.addActionListener(new MyHandler());
+		about.addActionListener(new MyHandler());
+		REFRESH_INTERVAL_item.addActionListener(new MyHandler());
+		btnLogIn.addActionListener(new MyHandler());
+
+	}
 
 class MyHandler implements ActionListener{
 
@@ -240,138 +288,30 @@ class MyHandler implements ActionListener{
 
 			if(e.getSource()== help){
 
-				JDialog helpDialog = new JDialog();	
+			 JFrame helpJFrame = new JFrame("Help");
+					final JDialog helpJDialog = new JDialog(helpJFrame,"Help");
+					 JTabbedPane helpTab = new JTabbedPane();
+					    JPanel helpPanel = new JPanel();
+			helpJDialog.setLayout(new BorderLayout());
+					    helpPanel.add(helpTab, BorderLayout.CENTER);
+				    
+					 // Create the tab pages
+					    createPage1();
+					    createPage2();
+					    createPage3();
+					 
+					//create a tabbed pane
+					helpTab.addTab( "Page 1", panel1 );
+					helpTab.addTab( "Page 2", panel2 );
+					helpTab.addTab( "Page 3", panel3 );
+					
+					helpJDialog.setModal(true);
+					helpJDialog.add(helpPanel,BorderLayout.CENTER);
+					helpJDialog.setPreferredSize(new Dimension(1000,600));
+					helpJDialog.pack();
+				   helpJDialog.setVisible(true);
 
-				
-				/*JDialog helpDialog = new JDialog();	
-
-				helpDialog.setBounds(10,10,300,300);
-				helpDialog.setModal(true);
-
-				}
-
-		/*	if(e.getSource()== REFRESH_INTERVAL_item){
-				// Open an internal frame when the item is selected :
-				JInternalFrame RIframe = new JInternalFrame();	
-				RIframe.setBounds(10,10,300,300);
-				JPanel panel= (JPanel) RIframe.getContentPane();
-
-				// In the frame, we can select the refresh interval via a combo box : 
-				JTextArea text = new JTextArea("Select the refresh interval of the ICE World :"); 
-				DefaultComboBoxModel mdc = new DefaultComboBoxModel(); 
-				final JComboBox combo = new JComboBox();
-				combo.setModel(mdc);
-				combo.setBounds(new Rectangle(19, 36, 129, 23)); 
-
-				for(int i=1; i<=10; i++){
-				mdc.addElement(""+i); 
-				combo.addItem(""+i); 	// adding the elements of the combo			
-				}	
-
-
-				//  set Layout to whatever Layout Manager
-			    //  flowLayout, GridLayout, etc...
-			    getContentPane().setLayout(new FlowLayout());
-			    JLabel label = new JLabel("Text-Only Label");
-			    label.setFont(new Font("Serif", Font.PLAIN, 36));
-			    getContentPane().add(label);
-			    setSize(230, 230);  //  or whatever size you want
-			    //  Place Frame in middle of Screen
-			    setLocationRelativeTo(null);  
-			    setVisible(true);*/
-				JLabel label = new JLabel("<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>iceWorld Manual</title>
-    <link href="css/html5reset.css" rel="stylesheet" />
-    <link href="css/style.css" rel="stylesheet" />
-</head>
-<body>
-    <header>
-        <hgroup>
-            <h1>Header in h1</h1>
-            <h2>Subheader in h2</h2>
-        </hgroup>
-    </header>
-    <nav>
-        <ul>
-            <li><a href="#">iceWorldPeek</a></li>
-            <li><a href="#">icePort</a></li>
-            <li><a href="#">iceWorld</a></li>
-            <li><a href="#">iceWorldPeek</a></li>
-            <li><a href="#">icePort</a></li>
-            <li><a href="#">iceWorld</a></li>
-        </ul>
-    </nav>
-    <section>
-        <article>
-            <header>
-                <h1><a href="#">iceWorldPeek</a></h1>
-            </header>
-            <section>
-                iceWorldPeek, after you run the program iceWorldPeek will check for your internet that if it is reachable or not if it is not reachable
-                the program will print that it is not reachable or the server is busy but if it connectable the program will redirect you to the icePort
-                windows automatically.
-            </section>
-        </article>
-        <article>
-            <header>
-                <h1><a href="#">icePort</a></h1>
-            </header>
-            <section>
-                After you are redirected to icePort windows you will see that there is a space to insert your Username and Password go ahead and enter
-                if you insert the incorrect Username or Password exceeding 3 times you will be banned for 5 mins but if you insert it correctly you will
-                be redirect to your iceWorld windows automatically
-            </section>
-        </article>
-        	<article>
-        	<header>
-        	<h1><a href="#">iceWorld</a></h1>
-        	</header>
-        	<section>
-        		There are many components in iceWorld start with:
-        			- Weather : Once you press the button it will show a splash screen of a realtime weather in iceWorld.
-        			- Profile : The profile page let you be able to customize your avatar with weapon, shield, armor, and helmet.
-        			- Chat Box : See the text-bix below? Type your text and press chat the text will automatically appear above
-        					your avatar head. If you press yell there will be an big size of quote box with your text inside coming 
-        					on the screen.
-        			- Sound : You can adjust the volume of BGM(Background Music) or SFX(Sound Effect) by scrolling the scrollbar on 
-        					top right corner of the screen
-    </section>
-</article>
-    </section>
-    <aside>
-        <section>
-            <h1>Links</h1>
-            <ul>
-                <li><a href="#">Link 1</a></li>
-                <li><a href="#">Link 2</a></li>
-                <li><a href="#">Link 3</a></li>
-            </ul>
-        </section>
-        <figure>
-            <img width="85" height="85" 
-                src=/Users/jtrnx/Desktop/AppPro/ProjMain.jpg
-                alt="Play Harder Work later" />
-            <figcaption>My Group</figcaption>
-        </figure>
-    </aside>
-    <footer>Footer - Copyright 2013</footer>
-</body>
-</html>");
-				//JTextField new_text = new JTextField("Test text");
-				JDialog new_dialog = new JDialog();
-				new_dialog.pack();
-				new_dialog.setVisible(true);
-				new_dialog.toFront();
-				new_dialog.setSize(500,150);
-				new_dialog.setLocation(500,500);
-				new_dialog.add(label);
-
-				}
-
-
+			}
 
 
 			if(e.getSource()== REFRESH_INTERVAL_item){
