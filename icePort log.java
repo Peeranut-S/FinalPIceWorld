@@ -184,145 +184,7 @@ public class icePort extends JFrame {
 			
 		}
 }
-	/*private void addListener() {
-=======
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
-import javax.swing.JDesktopPane;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
-
-
-
-public class icePort extends JFrame{
-	JMenuBar menuBar;
-	JMenu function;
-	JMenuItem help,about,quit;
-	JDesktopPane desktop;
-	static int offsetMultiplier = 0;
-	
-	// refreshing states attributes
-	int refresh_interval=10000;
-	JMenuItem REFRESH_INTERVAL_item;
-
-	public icePort(){
-		super("IcePort");
-		Toolkit toolkit = Toolkit.getDefaultToolkit(); // get screen size
-		Dimension screensize = toolkit.getScreenSize(); // get screen size
-		desktop = new JDesktopPane();
-		desktop.setBackground(Color.WHITE);
-		setContentPane(desktop);
-		setJMenuBar(setGUI());
-		setPreferredSize(screensize);
-		addListener();
-
-		desktop.setDragMode(JDesktopPane.LIVE_DRAG_MODE); 
-	}
-
-
-	public static void main(String[] args) 
-	{
-
-		javax.swing.SwingUtilities.invokeLater(new Runnable() 
-		{
-            public void run() 
-            {
-                createAndShowGUI();
-            }
-        });
-	}
-
-	//Setting of GUI to actually show the help and author
-	protected JMenuBar setGUI(){
-
-		menuBar = new JMenuBar();
-		function = new JMenu("File");
-		help = new JMenuItem ("Help"); // to be done by nad
-		about = new JMenuItem ("About"); // to be done by chubby
-		quit = new JMenuItem("Exit");
-		REFRESH_INTERVAL_item= new JMenuItem("Refresh interval");
-
-		function.add(help);
-		function.addSeparator();
-		function.add(about);
-		function.addSeparator();
-		function.add(REFRESH_INTERVAL_item);
-		function.addSeparator();
-		function.add(quit);
-		
-		help.setAccelerator(KeyStroke.getKeyStroke("F1"));
-
-		menuBar.add(function);
-
-		return menuBar;
-	}
-
-	// create and show GUI allowing it to close
-	protected static void createAndShowGUI()
-	{
-		icePort initialFrame = new icePort();
-		initialFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		initialFrame.pack();
-		initialFrame.setVisible(true);
-	}
-
-
-	// create the basic frame with background 
-	protected void createFrame()
-	{
-		MyInternalFrame frame = new MyInternalFrame();
-		ImageIcon image = new ImageIcon("Users/ZethaRia/Documents/Chat.jpg"); //adding the splash screen
-
-		 frame.setFrameIcon(image);
-
-	     frame.pack();
-	    frame.setVisible(true);
-        desktop.add(frame);
-        try 
-        {
-            frame.setSelected(true);
-        } 
-        catch (java.beans.PropertyVetoException e) {}
-	}
-
-
-	// ensure that multiple frame can be created
-	 	public static class MyInternalFrame extends JInternalFrame
-	{
-	    static int openFrameCount = 0;
-	    static final int xOffset = 30, yOffset = 30;
-
-	   public MyInternalFrame() 
-	    {
-	        super("Untitled-"+(++openFrameCount),true,true,true,true);
-	        setSize(600,600);
-	        ++offsetMultiplier;
-	        setLocation(xOffset*offsetMultiplier, yOffset*offsetMultiplier);
-	    }
-
-	}
-
-*/
 
 	private void addListener() {
 
@@ -340,9 +202,9 @@ public class icePort extends JFrame{
 
 
 class MyHandler implements ActionListener{
-=======
+
 	class MyHandler extends JComponent implements ActionListener{
->>>>>>> e4cf3f89af2ea9ca12815efe3b1cae9796986af5
+
 
 		public void actionPerformed(ActionEvent e){
 			if(e.getSource() ==quit){
@@ -391,7 +253,7 @@ class MyHandler implements ActionListener{
 				combo.addItem(""+i); 	// adding the elements of the combo			
 				}	
 
-=======
+
 				//  set Layout to whatever Layout Manager
 			    //  flowLayout, GridLayout, etc...
 			    getContentPane().setLayout(new FlowLayout());
