@@ -5,6 +5,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import javax.swing.*;
+import static org.junit.Assert.*;
 
 
 public class StateFetching extends JFrame implements Runnable {
