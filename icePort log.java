@@ -1,6 +1,9 @@
 import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.TextArea;
@@ -19,10 +22,12 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.JInternalFrame;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
 import javax.swing.JComboBox;
@@ -48,10 +53,6 @@ public class icePort extends JFrame {
 	private JMenuItem quit, REFRESH_INTERVAL_item,help,about;
 	private JButton btnLogIn;
 	
-	// Yelling attributes
-	private TextArea yellArea;
-	private JButton yellButton;
-	
 	/**
 	 * Launch the application.
 	 */
@@ -73,9 +74,9 @@ public class icePort extends JFrame {
 	 */
 	public icePort() {
 	BufferedImage myImage;
-
+		
     try {
-		myImage = ImageIO.read(new File("/Users/ZethaRia/Desktop/PC/ice3.jpg"));
+		myImage = ImageIO.read(new File("/Users/ZethaRia/ice3.jpg"));
 	this.setContentPane(this.new ImagePanel(myImage));
 		 } catch (IOException e1) {
 		// TODO Auto-generated catch block
@@ -83,57 +84,49 @@ public class icePort extends JFrame {
 		  }
     setBounds(100, 100, 1300, 800);
 
-    //setting layout
     getContentPane().setBackground(new Color(204, 255, 255));
     SpringLayout springlayout = new SpringLayout();
     getContentPane().setLayout(springlayout);
     
-   //setting GUI
-   JComboBox comboBox = new JComboBox();
-    springlayout.putConstraint(SpringLayout.NORTH, comboBox, 236, SpringLayout.NORTH, getContentPane());
-    springlayout.putConstraint(SpringLayout.WEST, comboBox, -643, SpringLayout.EAST, getContentPane());
-    springlayout.putConstraint(SpringLayout.SOUTH, comboBox, 278, SpringLayout.NORTH, getContentPane());
-    springlayout.putConstraint(SpringLayout.EAST, comboBox, -461, SpringLayout.EAST, getContentPane());
-    comboBox.setModel(new DefaultComboBoxModel(new String[] {"Inhabitant", "Alien"}));
-    getContentPane().add(comboBox);
-    
     textField = new JTextField();
-    springlayout.putConstraint(SpringLayout.NORTH, textField, 13, SpringLayout.SOUTH, comboBox);
-    springlayout.putConstraint(SpringLayout.WEST, textField, 0, SpringLayout.WEST, comboBox);
-    springlayout.putConstraint(SpringLayout.EAST, textField, 0, SpringLayout.EAST, comboBox);
+    springlayout.putConstraint(SpringLayout.NORTH, textField, 291, SpringLayout.NORTH, getContentPane());
+    springlayout.putConstraint(SpringLayout.EAST, textField, -461, SpringLayout.EAST, getContentPane());
     getContentPane().add(textField);
     textField.setColumns(10);
     
     passwordField = new JPasswordField();
     springlayout.putConstraint(SpringLayout.NORTH, passwordField, 15, SpringLayout.SOUTH, textField);
-    springlayout.putConstraint(SpringLayout.WEST, passwordField, 0, SpringLayout.WEST, comboBox);
-    springlayout.putConstraint(SpringLayout.EAST, passwordField, -5, SpringLayout.EAST, comboBox);
+    springlayout.putConstraint(SpringLayout.EAST, passwordField, -466, SpringLayout.EAST, getContentPane());
     getContentPane().add(passwordField);
     
-    btnLogIn = new JButton("Log In");
-    springlayout.putConstraint(SpringLayout.NORTH, btnLogIn, 26, SpringLayout.SOUTH, passwordField);
-    springlayout.putConstraint(SpringLayout.WEST, btnLogIn, 0, SpringLayout.WEST, comboBox);
+     btnLogIn = new JButton("Log In");
+     springlayout.putConstraint(SpringLayout.NORTH, btnLogIn, 23, SpringLayout.SOUTH, passwordField);
+     springlayout.putConstraint(SpringLayout.WEST, btnLogIn, 534, SpringLayout.WEST, getContentPane());
+     springlayout.putConstraint(SpringLayout.EAST, btnLogIn, -574, SpringLayout.EAST, getContentPane());
     getContentPane().add(btnLogIn);
     
-    JLabel lblCharacterSelection = new JLabel("Character Selection :");
-    springlayout.putConstraint(SpringLayout.NORTH, lblCharacterSelection, 12, SpringLayout.NORTH, comboBox);
-    springlayout.putConstraint(SpringLayout.EAST, lblCharacterSelection, -20, SpringLayout.WEST, comboBox);
-    getContentPane().add(lblCharacterSelection);
-    
     JLabel lblUsername = new JLabel("Username :");
+    springlayout.putConstraint(SpringLayout.EAST, lblUsername, -707, SpringLayout.EAST, getContentPane());
+    springlayout.putConstraint(SpringLayout.WEST, textField, 64, SpringLayout.EAST, lblUsername);
     springlayout.putConstraint(SpringLayout.NORTH, lblUsername, 0, SpringLayout.NORTH, textField);
-    springlayout.putConstraint(SpringLayout.EAST, lblUsername, -64, SpringLayout.WEST, textField);
     getContentPane().add(lblUsername);
     
     JLabel lblPassword = new JLabel("Password :");
+    springlayout.putConstraint(SpringLayout.WEST, passwordField, 67, SpringLayout.EAST, lblPassword);
     springlayout.putConstraint(SpringLayout.NORTH, lblPassword, 0, SpringLayout.NORTH, passwordField);
     springlayout.putConstraint(SpringLayout.WEST, lblPassword, 0, SpringLayout.WEST, lblUsername);
     getContentPane().add(lblPassword);
+    
+    JButton btnLogInAs = new JButton("Log in as Alien");
+    springlayout.putConstraint(SpringLayout.NORTH, btnLogInAs, 0, SpringLayout.NORTH, btnLogIn);
+    springlayout.putConstraint(SpringLayout.WEST, btnLogInAs, 6, SpringLayout.EAST, btnLogIn);
+    springlayout.putConstraint(SpringLayout.EAST, btnLogInAs, -410, SpringLayout.EAST, getContentPane());
+    getContentPane().add(btnLogInAs);
     setSize(1200,700);
-	
-	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //allow closing of programme
-
- menuBar = new JMenuBar();
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		
+		 menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
 		 function = new JMenu("File");
@@ -151,67 +144,29 @@ public class icePort extends JFrame {
 		about = new JMenuItem("About window");
 		mntmAboutWindow.add(about);
 		
-		JMenu mntmHelpWindow  = new JMenu("Help");
+		JMenu mntmHelpWindow  = new JMenu("Help (F1)");
 		menuBar.add(mntmHelpWindow );
 		
-		help = new JMenuItem("Help Window(F1)");
+		help = new JMenuItem("Help Window");
 		mntmHelpWindow .add(help);
 		addListener();
 		
-        // components used to yell
-        yellArea= new TextArea("Write your yell");
-    	yellButton= new JButton("Yell!");
-    	yellArea.setVisible(true);
-    	yellButton.setVisible(true);
-
-
 	}
 
 	class ImagePanel extends JComponent {
 		  private Image image;
-
+		  
 		public ImagePanel(Image image) {
 		 this.image = image;}
 		@Override
-
+		
 		protected void paintComponent(Graphics g){
 			g.drawImage(image,0,0,null);
-			yellButton.addActionListener(new ActionListener()
-			{
-				public void actionPerformed(ActionEvent e)
-				{
-
-					// Action performed to yell:
-					
-						String text=textArea.getText();
-						textArea.setText("Write your yell!");
-						Yelling yell= new Yelling(text);
-						int nb_yells= yell.getNBYells();
-					
-						while(yell.yell_start-5000>=0 ){
-							g.setColor(Color.BLACK); 
-							g.fillOval(200,200,20=nb_yells*10,20=nb_yells*10);
-				}
-			});
-			
 		}
+		
 }
-
-
-	private void addListener() {
-
-
-		//quitting the program
-		quit.addActionListener(new MyHandler());
-		help.addActionListener(new MyHandler());
-		about.addActionListener(new MyHandler());
-		REFRESH_INTERVAL_item.addActionListener(new MyHandler());
-		yellButtonddActionListener(new MyHandler());
-		btnLogIn.addActionListener(new MyHandler());
-
-
-	}
-//create panel for the help
+	
+	//create panel for the help
 			public void createPage1()
 			 {
 			panel1 = new JPanel();
@@ -258,41 +213,25 @@ public class icePort extends JFrame {
 
 class MyHandler implements ActionListener{
 
-	class MyHandler extends JComponent implements ActionListener{
-
-
 		public void actionPerformed(ActionEvent e){
 			if(e.getSource() ==quit){
 				System.exit(0);
+				
 			}
 
-			if(e.getSource()== about){
+			if(e.getSource()==about){
 				JDialog aboutDialog = new JDialog();
 				aboutDialog.setBounds(10,10,300,300);
+				aboutDialog.setModal(true);
 				aboutDialog.setVisible(true);
 			}
 
-
-			if(e.getSource()==btnLogIn){
-				// if the password is right
-				try {
-                    new splashScr().initUI();
-                    
-                } catch (MalformedURLException d) {
-                    d.printStackTrace();
-                }
-				setVisible(false);
-				
-				//open up iceWorld 
-			}
-
-			if(e.getSource()== help){
-
-			 JFrame helpJFrame = new JFrame("Help");
+			if(e.getSource()==help){
+				 JFrame helpJFrame = new JFrame("Help");
 					final JDialog helpJDialog = new JDialog(helpJFrame,"Help");
 					 JTabbedPane helpTab = new JTabbedPane();
 					    JPanel helpPanel = new JPanel();
-			helpJDialog.setLayout(new BorderLayout());
+			helpJDialog.getContentPane().setLayout(new BorderLayout());
 					    helpPanel.add(helpTab, BorderLayout.CENTER);
 				    
 					 // Create the tab pages
@@ -305,38 +244,55 @@ class MyHandler implements ActionListener{
 					helpTab.addTab( "Page 2", panel2 );
 					helpTab.addTab( "Page 3", panel3 );
 					
+					helpJDialog.setBounds(0,0,1200,600);
 					helpJDialog.setModal(true);
-					helpJDialog.add(helpPanel,BorderLayout.CENTER);
+					helpJDialog.getContentPane().add(helpPanel,BorderLayout.CENTER);
 					helpJDialog.setPreferredSize(new Dimension(1000,600));
-					helpJDialog.pack();
+				//	helpJDialog.pack();
 				   helpJDialog.setVisible(true);
-
+					
+				
+				/*	JDialog helpDialog = new JDialog();	
+				helpDialog.setBounds(10,10,300,300);
+				helpDialog.setModal(true);
+				helpDialog.setLocationRelativeTo(null);
+				helpDialog.setVisible(true);*/
+				}
+			
+			if(e.getSource()==btnLogIn){
+				// if the password is right
+	dispose();
+	
+	//	SplashScrn wait = new SplashScrn();
+		Thread a = new Thread(new SplashScrn());
+		a.start();
+	
+			
+				
+				
 			}
-
 
 			if(e.getSource()== REFRESH_INTERVAL_item){
 				// Open an internal frame when the item is selected :
 				JInternalFrame RIframe = new JInternalFrame("Setting the refresh interval", true, true, true, true);	
 				RIframe.setBounds(500,100,300,300);
-
+				
 				JPanel panel= (JPanel) RIframe.getContentPane();
 
 				// In the frame, we can select the refresh interval via a combo box : 
 				JTextArea text = new JTextArea("Select the refresh interval of the ICE World :"); 
+				DefaultComboBoxModel mdc = new DefaultComboBoxModel(); 
 				final JComboBox combo = new JComboBox();
-				combo.setBounds(new Rectangle(2, 2, 2, 2)); 
-
+				combo.setBounds(new Rectangle(2, 2, 2, 2));
 
 				for(int i=1; i<=10; i++){
 					combo.addItem(i); 	// adding the elements of the combo			
 				}	
 
-
 				combo.addActionListener(new ActionListener()
 				{
 					public void actionPerformed(ActionEvent e)
 					{
-
 						int new_value= (Integer) combo.getSelectedItem();
 						StateFetching.setREFRESH_INTERVAL(new_value);
 					}
@@ -346,30 +302,25 @@ class MyHandler implements ActionListener{
 				panel.add(text, BorderLayout.CENTER);
 				panel.add(combo, BorderLayout.CENTER);
 				RIframe.setVisible(true);
-			}	
-		}
-
-						refresh_interval= (Integer) combo.getSelectedItem();
-						StateFetching statefetching= new StateFetching();
-						statefetching.setREFRESH_INTERVAL(refresh_interval);
-					}
-				});
-
-				combo.setSelectedItem(refresh_interval);
+					
+		
+		int refresh_interval =(Integer) combo.getSelectedItem();
+		//refresh_interval= (Integer) combo.getSelectedItem();
+		StateFetching statefetching= new StateFetching();
+	statefetching.setREFRESH_INTERVAL(refresh_interval);
+	combo.setSelectedItem(refresh_interval);
 
 
-				RIframe.setLayout( new GridLayout(2,1,5,5));
+	RIframe.setLayout( new GridLayout(2,1,5,5));
 
-				panel.add(text, BorderLayout.CENTER);
-				panel.add(combo, BorderLayout.CENTER);
-				panel.setVisible(true);
-				Container c = getContentPane();
-				c.add(RIframe);
-				RIframe.setVisible(true);
-			}		
-		}
+	panel.add(text, BorderLayout.CENTER);
+	panel.add(combo, BorderLayout.CENTER);
+	panel.setVisible(true);
+	Container c = getContentPane();
+	c.add(RIframe);
+	RIframe.setVisible(true);
 
-
-
-	}
 }
+	}
+}}
+
