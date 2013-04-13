@@ -19,14 +19,18 @@ import javax.swing.JMenuItem;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.LinkedList;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
@@ -35,6 +39,13 @@ import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+
+
+
+
+
+
+
 
 
 public class icePort extends JFrame {
@@ -51,8 +62,9 @@ public class icePort extends JFrame {
 	 private JPanel panel3;
     
 	private JMenuItem quit, REFRESH_INTERVAL_item,help,about;
-	private JButton btnLogIn;
+	private JButton btnLogIn,bAlien;
 	
+
 	/**
 	 * Launch the application.
 	 */
@@ -73,6 +85,8 @@ public class icePort extends JFrame {
 	 * Create the frame.
 	 */
 	public icePort() {
+	
+		
 	BufferedImage myImage;
 		
     try {
@@ -117,13 +131,23 @@ public class icePort extends JFrame {
     springlayout.putConstraint(SpringLayout.WEST, lblPassword, 0, SpringLayout.WEST, lblUsername);
     getContentPane().add(lblPassword);
     
-    JButton btnLogInAs = new JButton("Log in as Alien");
-    springlayout.putConstraint(SpringLayout.NORTH, btnLogInAs, 0, SpringLayout.NORTH, btnLogIn);
-    springlayout.putConstraint(SpringLayout.WEST, btnLogInAs, 6, SpringLayout.EAST, btnLogIn);
-    springlayout.putConstraint(SpringLayout.EAST, btnLogInAs, -410, SpringLayout.EAST, getContentPane());
-    getContentPane().add(btnLogInAs);
+     bAlien = new JButton("Log in as Alien");
+    springlayout.putConstraint(SpringLayout.NORTH, bAlien, 0, SpringLayout.NORTH, btnLogIn);
+    springlayout.putConstraint(SpringLayout.WEST, bAlien, 6, SpringLayout.EAST, btnLogIn);
+    springlayout.putConstraint(SpringLayout.EAST, bAlien, -410, SpringLayout.EAST, getContentPane());
+    getContentPane().add(bAlien);
     setSize(1200,700);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+    
+    // making the ICEWORLD confirming exit upon clicking
+    this.addWindowListener(new WindowAdapter() {
+        public void windowClosing(WindowEvent e) { 
+             int reply = JOptionPane.showConfirmDialog(null, 
+            		 "You want to quit?", "ICEWORLD", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+             if (reply == JOptionPane.YES_OPTION)
+                 System.exit(0);
+        }});
+    
 		
 		
 		 menuBar = new JMenuBar();
@@ -151,7 +175,11 @@ public class icePort extends JFrame {
 		mntmHelpWindow .add(help);
 		addListener();
 		
+		
 	}
+	
+	
+
 
 	class ImagePanel extends JComponent {
 		  private Image image;
@@ -208,14 +236,23 @@ public class icePort extends JFrame {
 		about.addActionListener(new MyHandler());
 		REFRESH_INTERVAL_item.addActionListener(new MyHandler());
 		btnLogIn.addActionListener(new MyHandler());
+		bAlien.addActionListener(new MyHandler());
 
 	}
 
 class MyHandler implements ActionListener{
 
+	
 		public void actionPerformed(ActionEvent e){
 			if(e.getSource() ==quit){
-				System.exit(0);
+				String message = "Are you sure you want to exit the ICEWORLD?";
+				int reply = JOptionPane.showConfirmDialog(null, message,"Confirmation", JOptionPane.YES_NO_OPTION);
+				
+				if (reply == JOptionPane.YES_OPTION)
+                {
+                    System.exit(0);
+                }
+				
 				
 			}
 
@@ -261,16 +298,59 @@ class MyHandler implements ActionListener{
 			
 			if(e.getSource()==btnLogIn){
 				// if the password is right
-	dispose();
-	
-	//	SplashScrn wait = new SplashScrn();
-		Thread a = new Thread(new SplashScrn());
-		a.start();
+	String utest = textField.getText();
+	String passt = passwordField.getText();
+	int count =0; int sum =0;
 	
 			
-				
+	
+	if(utest.equals("peeranut")&&  passt.equals("1234")){
+	
+			
+					JOptionPane.showMessageDialog(null,"Login Success");
+					
+				dispose();
+	
+		SplashScrn wait = new SplashScrn();
+		Thread a = new Thread(wait);
+		a.start();
 				
 			}
+				else{
+					String uname1 = utest; //get the username
+					
+					JOptionPane.showMessageDialog(null,"Attempt to login fail!"+"\n"+ "please re-check your username and password");
+					
+							
+					if((uname1.equals(utest))&&(!passt.equals("1234"))){
+						count++;
+					}
+					
+					if(count==3) {
+							//do the blocking log in access
+						textField.setEditable(false);
+							passwordField.setEditable(false);
+						
+							
+					}
+					
+								
+				 
+				 textField.setText("");
+			passwordField.setText("");
+			textField.requestFocus();   //move cursor back to username field
+			
+			System.out.print(count);
+			}
+			
+			}
+			
+			if (e.getSource() == bAlien ){
+				JOptionPane.showMessageDialog(null,"Login as Alien");
+			}
+				
+				
+			
 
 			if(e.getSource()== REFRESH_INTERVAL_item){
 				// Open an internal frame when the item is selected :
