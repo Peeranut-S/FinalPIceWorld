@@ -257,9 +257,18 @@ class MyHandler implements ActionListener{
 			}
 
 			if(e.getSource()==about){
-				JDialog aboutDialog = new JDialog();
-				aboutDialog.setBounds(10,10,300,300);
-				aboutDialog.setModal(true);
+			JFrame aboutDialog = new JFrame();
+				aboutDialog.setSize(1000, 1000);
+				aboutDialog.setTitle("aboutDialog");
+				aboutDialog.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				
+				//gonna put some pic instead of spongebob
+				ImageIcon info = new ImageIcon("spongebob.jpg");
+				
+				JLabel n = new JLabel(info);
+				//aboutDialog.setSize(500, 500);
+				
+				aboutDialog.add(n);
 				aboutDialog.setVisible(true);
 			}
 
