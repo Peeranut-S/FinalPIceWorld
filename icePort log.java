@@ -1,3 +1,5 @@
+import iceworld.given.ICEWorldImmigration;
+
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -46,14 +48,14 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-
 public class icePort extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
 	private JPasswordField passwordField;
-	private JButton btnLogIn,bAlien;
-	
+	private JButton btnLogIn, bAlien;
+	private Icetizen user;
+	private ICEWorldImmigration immigration;
 
 	/**
 	 * Launch the application.
@@ -75,111 +77,135 @@ public class icePort extends JFrame {
 	 * Create the frame.
 	 */
 	public icePort() {
-	
-		
-	BufferedImage myImage;
-		
-    try {
-		myImage = ImageIO.read(new File("/Users/ZethaRia/ice3.jpg"));
-	this.setContentPane(this.new ImagePanel(myImage));
-		 } catch (IOException e1) {
-		// TODO Auto-generated catch block
-		 e1.printStackTrace();
-		  }
-    setBounds(100, 100, 1300, 800);
 
-    getContentPane().setBackground(new Color(204, 255, 255));
-    SpringLayout springlayout = new SpringLayout();
-    getContentPane().setLayout(springlayout);
-    
-    textField = new JTextField();
-    springlayout.putConstraint(SpringLayout.NORTH, textField, 291, SpringLayout.NORTH, getContentPane());
-    springlayout.putConstraint(SpringLayout.EAST, textField, -461, SpringLayout.EAST, getContentPane());
-    getContentPane().add(textField);
-    textField.setColumns(10);
-    
-    passwordField = new JPasswordField();
-    springlayout.putConstraint(SpringLayout.NORTH, passwordField, 15, SpringLayout.SOUTH, textField);
-    springlayout.putConstraint(SpringLayout.EAST, passwordField, -466, SpringLayout.EAST, getContentPane());
-    getContentPane().add(passwordField);
-    
-     btnLogIn = new JButton("Log In");
-     springlayout.putConstraint(SpringLayout.NORTH, btnLogIn, 23, SpringLayout.SOUTH, passwordField);
-     springlayout.putConstraint(SpringLayout.WEST, btnLogIn, 534, SpringLayout.WEST, getContentPane());
-     springlayout.putConstraint(SpringLayout.EAST, btnLogIn, -574, SpringLayout.EAST, getContentPane());
-    getContentPane().add(btnLogIn);
-    
-    JLabel lblUsername = new JLabel("Username :");
-    springlayout.putConstraint(SpringLayout.EAST, lblUsername, -707, SpringLayout.EAST, getContentPane());
-    springlayout.putConstraint(SpringLayout.WEST, textField, 64, SpringLayout.EAST, lblUsername);
-    springlayout.putConstraint(SpringLayout.NORTH, lblUsername, 0, SpringLayout.NORTH, textField);
-    getContentPane().add(lblUsername);
-    
-    JLabel lblPassword = new JLabel("Password :");
-    springlayout.putConstraint(SpringLayout.WEST, passwordField, 67, SpringLayout.EAST, lblPassword);
-    springlayout.putConstraint(SpringLayout.NORTH, lblPassword, 0, SpringLayout.NORTH, passwordField);
-    springlayout.putConstraint(SpringLayout.WEST, lblPassword, 0, SpringLayout.WEST, lblUsername);
-    getContentPane().add(lblPassword);
-    
-     bAlien = new JButton("Log in as Alien");
-    springlayout.putConstraint(SpringLayout.NORTH, bAlien, 0, SpringLayout.NORTH, btnLogIn);
-    springlayout.putConstraint(SpringLayout.WEST, bAlien, 6, SpringLayout.EAST, btnLogIn);
-    springlayout.putConstraint(SpringLayout.EAST, bAlien, -410, SpringLayout.EAST, getContentPane());
-    getContentPane().add(bAlien);
-    setSize(1200,700);
-    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-    
-    // making the ICEWORLD confirming exit upon clicking
-    this.addWindowListener(new WindowAdapter() {
-        public void windowClosing(WindowEvent e) { 
-             int reply = JOptionPane.showConfirmDialog(null, 
-            		 "You want to quit?", "ICEWORLD", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-             if (reply == JOptionPane.YES_OPTION)
-                 System.exit(0);
-        }});
-    
+		BufferedImage myImage;
+
+		try {
+			myImage = ImageIO.read(new File("/Users/ZethaRia/ice3.jpg"));
+			this.setContentPane(this.new ImagePanel(myImage));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		setBounds(100, 100, 1300, 800);
+
+		getContentPane().setBackground(new Color(204, 255, 255));
+		SpringLayout springlayout = new SpringLayout();
+		getContentPane().setLayout(springlayout);
+
+		textField = new JTextField();
+		springlayout.putConstraint(SpringLayout.NORTH, textField, 291,
+				SpringLayout.NORTH, getContentPane());
+		springlayout.putConstraint(SpringLayout.EAST, textField, -461,
+				SpringLayout.EAST, getContentPane());
+		getContentPane().add(textField);
+		textField.setColumns(10);
+
+		passwordField = new JPasswordField();
+		springlayout.putConstraint(SpringLayout.NORTH, passwordField, 15,
+				SpringLayout.SOUTH, textField);
+		springlayout.putConstraint(SpringLayout.EAST, passwordField, -466,
+				SpringLayout.EAST, getContentPane());
+		getContentPane().add(passwordField);
+
+		btnLogIn = new JButton("Log In");
+		springlayout.putConstraint(SpringLayout.NORTH, btnLogIn, 23,
+				SpringLayout.SOUTH, passwordField);
+		springlayout.putConstraint(SpringLayout.WEST, btnLogIn, 534,
+				SpringLayout.WEST, getContentPane());
+		springlayout.putConstraint(SpringLayout.EAST, btnLogIn, -574,
+				SpringLayout.EAST, getContentPane());
+		getContentPane().add(btnLogIn);
+
+		JLabel lblUsername = new JLabel("Username :");
+		springlayout.putConstraint(SpringLayout.EAST, lblUsername, -707,
+				SpringLayout.EAST, getContentPane());
+		springlayout.putConstraint(SpringLayout.WEST, textField, 64,
+				SpringLayout.EAST, lblUsername);
+		springlayout.putConstraint(SpringLayout.NORTH, lblUsername, 0,
+				SpringLayout.NORTH, textField);
+		getContentPane().add(lblUsername);
+
+		JLabel lblPassword = new JLabel("Password :");
+		springlayout.putConstraint(SpringLayout.WEST, passwordField, 67,
+				SpringLayout.EAST, lblPassword);
+		springlayout.putConstraint(SpringLayout.NORTH, lblPassword, 0,
+				SpringLayout.NORTH, passwordField);
+		springlayout.putConstraint(SpringLayout.WEST, lblPassword, 0,
+				SpringLayout.WEST, lblUsername);
+		getContentPane().add(lblPassword);
+
+		bAlien = new JButton("Log in as Alien");
+		springlayout.putConstraint(SpringLayout.NORTH, bAlien, 0,
+				SpringLayout.NORTH, btnLogIn);
+		springlayout.putConstraint(SpringLayout.WEST, bAlien, 6,
+				SpringLayout.EAST, btnLogIn);
+		springlayout.putConstraint(SpringLayout.EAST, bAlien, -410,
+				SpringLayout.EAST, getContentPane());
+		getContentPane().add(bAlien);
+		setSize(1200, 700);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+		user = new Icetizen();
+		user.setIcePortID(250);
+		user.setListeningPort(12345);
+		ICEWorldImmigration immigration = new ICEWorldImmigration(user);
+
+		// making the ICEWORLD confirming exit upon clicking
+		this.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				int reply = JOptionPane
+						.showConfirmDialog(null, "You want to quit?",
+								"ICEWORLD", JOptionPane.YES_NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE);
+				if (reply == JOptionPane.YES_OPTION)
+					System.exit(0);
+			}
+		});
+
 		addListener();
-		
-		
-	}
-	
-	
 
+	}
 
 	class ImagePanel extends JComponent {
-		  private Image image;
-		  
+		private Image image;
+
 		public ImagePanel(Image image) {
-		 this.image = image;}
-		@Override
-		
-		protected void paintComponent(Graphics g){
-			g.drawImage(image,0,0,null);
+			this.image = image;
 		}
-		
-}
-	
-	
+
+		@Override
+		protected void paintComponent(Graphics g) {
+			g.drawImage(image, 0, 0, null);
+		}
+
+	}
+
 	private void addListener() {
-		
+
 		btnLogIn.addActionListener(new MyHandler());
 		bAlien.addActionListener(new MyHandler());
 
 	}
 
-class MyHandler implements ActionListener{
+	class MyHandler implements ActionListener {
 
-	
 		public void actionPerformed(ActionEvent e){
 				
 			if(e.getSource()==btnLogIn){
 				// if the password is right
 	String utest = textField.getText();
-	String passt = passwordField.getText();
+	user.setUsername(utest);
+	char[] pass = passwordField.getPassword();
+	String password="";
+	for(int i=0;i<pass.length;i++){
+		password += pass[i]; 
+	}
+	
 	int count =0; int sum =0;
 	
 	
-	if(utest.equals("peeranut")&&  passt.equals("1234")){
+	if(immigration.login(password)){
 	
 			
 					JOptionPane.showMessageDialog(null,"Login Success");
@@ -192,13 +218,20 @@ class MyHandler implements ActionListener{
 				
 			}
 				else{
-					String uname1 = utest; //get the username
+					String uname1="";
+					if(count == 0){
+						uname1 = utest; // get the username
+					}
+					
 					
 					JOptionPane.showMessageDialog(null,"Attempt to login fail!"+"\n"+ "please re-check your username and password");
 					
 							
-					if((uname1.equals(utest))&&(!passt.equals("1234"))){
+					if(uname1.equals(utest)){
 						count++;
+					}else{
+						uname1 = utest;
+						count =0;
 					}
 					
 					if(count==3) {
@@ -221,6 +254,7 @@ class MyHandler implements ActionListener{
 			}
 			
 			if (e.getSource() == bAlien ){
+				immigration.loginAlien();
 				JOptionPane.showMessageDialog(null,"Login as Alien");
 			}
 				
@@ -277,5 +311,5 @@ class MyHandler implements ActionListener{
 
 }*/
 	}
-}}
-
+	}
+}
