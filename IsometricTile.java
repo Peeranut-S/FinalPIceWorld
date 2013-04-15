@@ -1,3 +1,5 @@
+
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -15,19 +17,22 @@ public class IsometricTile extends JComponent{
 
 	private int scrX = Toolkit.getDefaultToolkit().getScreenSize().width;
 	private int scrY = Toolkit.getDefaultToolkit().getScreenSize().height;
-	private int col, row, width, height;
+	private int col, row, width, height,zoom;
 	private Point start;
 	private Polygon p;
 	private Boolean target;
 	private int mouseX,mouseY;
+
+
 	
-	public IsometricTile (int col, int row) {
+	public IsometricTile (int col, int row, int zoomV) {
 		this.col = col;
 		this.row = row;
+		this.zoom = zoomV;
 		target = false ;
 
-		width = scrX/260;
-     	height = scrY/260;
+		width = (scrX/260)*zoomV;
+     	height = (scrY/260)*zoomV;
         start = new Point (scrX/3+40,height+(scrY-height*270)/2);
         
     	int originLine = start.x - col*width ; 
@@ -42,11 +47,7 @@ public class IsometricTile extends JComponent{
 
 
     public void paintComponent(Graphics g) {
-        		
-
-                
-             
-                
+        		   
                 g.setColor(Color.BLACK);
         		g.drawPolygon(p);
         		 g.setColor(new Color(153, 204, 255));
@@ -57,6 +58,8 @@ public class IsometricTile extends JComponent{
                    g.fillPolygon(p);
                    }
             }
+    
+    
     
     public int getLine () {
     	return col;
