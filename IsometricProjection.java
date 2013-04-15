@@ -9,6 +9,7 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -21,49 +22,51 @@ import iceworld.given.ICEWorldImmigration;
 
 public class IsometricProjection extends JFrame{
 	JButton zoomIn,zoomOut,chat,yell,custom,sound,logout;
-	//double i=1;
+	int zoom=1;
+
 	private    JTabbedPane tabbedPane;
 	private    JPanel    panel1;
 	private    JPanel    panel2;
 	private    JPanel    panel3;
 	//MyIcetizen ice = new MyIcetizen();
 	//ICEWorldImmigration immigrate = new ICEWorldImmigration(ice);
-	
+
 	IsometricShow iso;
 	JTextField chatBox;
 	private JMenuBar menuBar;
-private JMenuItem help,about,quit, REFRESH_INTERVAL_item;
-private JPanel mini;
+	private JMenuItem help,about,quit, REFRESH_INTERVAL_item,zi,zo;
+	private JPanel mini;
 
-	public static void main(String[] a) throws IOException{
+	public static void main(String[] a) {
 		IsometricProjection mainFrame = new IsometricProjection();
 	}
-	public IsometricProjection() throws IOException{
+	public IsometricProjection() {
 		super("My Frame");
-		this.setBackground(Color.WHITE);
+		menuBar = new JMenuBar();
+		this.add(menuBar);
+
+		setJMenuBar(menuBar);
+		//this.setBackground(Color.WHITE);
 		iso = new  IsometricShow();
 
 
 		this.setLayout(null);
 		iso.setBounds(0,0,1000,600);
+		iso.setOpaque(false);
 		this.add(iso);
 		mini = new JPanel();
 		mini.setBounds(1000,0,400,250);
 		mini.setBackground(Color.BLACK);
 		this.add(mini);
-		//JEditorPane htmlP = new JEditorPane();
-		//htmlP.setPage((TabbedPane.class.getResource("mini.html")));
-		//htmlP.setBounds(1000,0,300,300);
-		//this.add(htmlP);
-	      
-createGUI();
+
+		createGUI();
 	}
-		
 
-public void createGUI(){
-	
 
-JPanel panel_1 = new JPanel();   //panel for various option
+	public void createGUI(){
+
+
+		JPanel panel_1 = new JPanel();   //panel for various option
 		panel_1.setBounds(1000,300,300,410);
 		panel_1.setBackground(Color.DARK_GRAY);
 		this.add(panel_1);
@@ -84,10 +87,12 @@ JPanel panel_1 = new JPanel();   //panel for various option
 
 		zoomIn = new JButton("ZoomIn(+)");
 		zoomIn.setBounds(40,170,200,40);
+		zoomIn.setMnemonic(KeyEvent.VK_ADD);
 		panel_1.add(zoomIn);
 
 		zoomOut = new JButton("ZoomOut(-)");
 		zoomOut.setBounds(40,230,200,40);
+		zoomOut.setMnemonic(KeyEvent.VK_MINUS);
 		panel_1.add(zoomOut);
 
 		logout = new JButton("Log Out");
@@ -115,7 +120,7 @@ JPanel panel_1 = new JPanel();   //panel for various option
 		yell.setBounds(900,15,80,40);
 		panel_2.add(yell);
 
-	setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		// making the ICEWORLD confirming exit upon clicking
 		this.addWindowListener(new WindowAdapter() {
@@ -129,13 +134,16 @@ JPanel panel_1 = new JPanel();   //panel for various option
 		this.setSize(Toolkit.getDefaultToolkit().getScreenSize().width,Toolkit.getDefaultToolkit().getScreenSize().height);
 		this.setVisible(true);
 
-		menuBar = new JMenuBar();
-		this.add(menuBar);
-		setJMenuBar(menuBar);
+
 
 
 		JMenu mntmAboutWindow = new JMenu("File");
 		menuBar.add(mntmAboutWindow);
+
+		zi = new JMenuItem("ZoomIn(+)");
+		zo = new JMenuItem("ZoomIn(-)");
+		mntmAboutWindow.add(zi); mntmAboutWindow.add(zo);
+
 
 		about = new JMenuItem("About");
 		mntmAboutWindow.add(about);
@@ -143,6 +151,7 @@ JPanel panel_1 = new JPanel();   //panel for various option
 
 		help = new JMenuItem("Help(F1)");
 		mntmAboutWindow.add(help);
+		help.setAccelerator(KeyStroke.getKeyStroke("F1"));
 
 		REFRESH_INTERVAL_item = new JMenuItem("Refresh Interval");
 		mntmAboutWindow.add(REFRESH_INTERVAL_item);
@@ -163,66 +172,70 @@ JPanel panel_1 = new JPanel();   //panel for various option
 		chat.addActionListener(new MyHandler());
 		yell.addActionListener(new MyHandler());
 		custom.addActionListener(new MyHandler());
+		zoomIn.addActionListener(new MyHandler());
+		zoomOut.addActionListener(new MyHandler());
+		zi.addActionListener(new MyHandler());
+		zo.addActionListener(new MyHandler());
 	}
-	
+
 	public void createPage1()
 	{
 		panel1 = new JPanel();
-	    panel1.setVisible(true);
-	    panel1.setBackground(new Color(250,251,253)); 
-	    try {
-	      JEditorPane htmlPane = new JEditorPane();
-	      htmlPane.setPage(TabbedPane.class.getResource("index.html"));
-	      htmlPane.setEditable(false);
-	      JScrollPane scrollpane = new JScrollPane(htmlPane);
-	      panel1.add(scrollpane);
-	      //File file1= new File("path of the file");
-	      //htmlPane.setPage(TabbedPane.class.getResource("index.html"));
-	      //htmlPane.setEditable(false);
-	      //panel1.add(new JScrollPane(htmlPane));
-	    } catch(IOException ioe) {
-	      System.err.println("Error displaying file");
-	    }
+		panel1.setVisible(true);
+		panel1.setBackground(new Color(250,251,253)); 
+		try {
+			JEditorPane htmlPane = new JEditorPane();
+			htmlPane.setPage(TabbedPane.class.getResource("index.html"));
+			htmlPane.setEditable(false);
+			JScrollPane scrollpane = new JScrollPane(htmlPane);
+			panel1.add(scrollpane);
+			//File file1= new File("path of the file");
+			//htmlPane.setPage(TabbedPane.class.getResource("index.html"));
+			//htmlPane.setEditable(false);
+			//panel1.add(new JScrollPane(htmlPane));
+		} catch(IOException ioe) {
+			System.err.println("Error displaying file");
+		}
 	}
 
 	public void createPage2()
 	{
 		panel2 = new JPanel();
-	    panel2.setVisible(true);
-	    panel2.setBackground(new Color(250,251,253)); 
-	    try {
-	      JEditorPane htmlPane2 = new JEditorPane();
-	      htmlPane2.setPage(TabbedPane.class.getResource("index2.html"));
-	      htmlPane2.setEditable(false);
-	      JScrollPane scrollpane = new JScrollPane(htmlPane2);
-	      panel2.add(scrollpane);
-	      //File file1= new File("path of the file");
-	      //htmlPane.setPage(TabbedPane.class.getResource("index.html"));
-	      //htmlPane.setEditable(false);
-	      //panel1.add(new JScrollPane(htmlPane));
-	    } catch(IOException ioe) {
-	      System.err.println("Error displaying file");
-	    }
+		panel2.setVisible(true);
+		panel2.setBackground(new Color(250,251,253)); 
+		try {
+			JEditorPane htmlPane2 = new JEditorPane();
+			htmlPane2.setPage(TabbedPane.class.getResource("index2.html"));
+			htmlPane2.setEditable(false);
+			JScrollPane scrollpane = new JScrollPane(htmlPane2);
+			panel2.add(scrollpane);
+			//File file1= new File("path of the file");
+			//htmlPane.setPage(TabbedPane.class.getResource("index.html"));
+			//htmlPane.setEditable(false);
+			//panel1.add(new JScrollPane(htmlPane));
+		} catch(IOException ioe) {
+			System.err.println("Error displaying file");
+		}
 	}
 
 	public void createPage3()
 	{
 		panel3 = new JPanel();
-	    panel3.setVisible(true);
-	    panel3.setBackground(new Color(250,251,253)); 
-	    try {
-	      JEditorPane htmlPane3 = new JEditorPane();
-	      htmlPane3.setPage(TabbedPane.class.getResource("index3.html"));
-	      htmlPane3.setEditable(false);
-	      JScrollPane scrollpane = new JScrollPane(htmlPane3);
-	      panel3.add(scrollpane);
-	      //File file1= new File("path of the file");
-	      //htmlPane.setPage(TabbedPane.class.getResource("index.html"));
-	      //htmlPane.setEditable(false);
-	      //panel1.add(new JScrollPane(htmlPane));
-	    } catch(IOException ioe) {
-	      System.err.println("Error displaying file");
-	    }
+		panel3.setVisible(true);
+		panel3.setBackground(new Color(250,251,253)); 
+		try {
+			JEditorPane htmlPane3 = new JEditorPane();
+			htmlPane3.setPage(TabbedPane.class.getResource("index3.html"));
+			htmlPane3.setEditable(false);
+			JScrollPane scrollpane = new JScrollPane(htmlPane3);
+			panel3.add(scrollpane);
+			//File file1= new File("path of the file");
+			//htmlPane.setPage(TabbedPane.class.getResource("index.html"));
+			//htmlPane.setEditable(false);
+			//panel1.add(new JScrollPane(htmlPane));
+		} catch(IOException ioe) {
+			System.err.println("Error displaying file");
+		}
 	}
 
 	class MyHandler implements ActionListener{
@@ -254,44 +267,35 @@ JPanel panel_1 = new JPanel();   //panel for various option
 				aboutDialog.setVisible(true);
 			}
 
-				if(e.getSource()==help){
-					JFrame helpDialog = new JFrame();
-					helpDialog.setSize(1000, 1000);
-					helpDialog.setTitle("HelpDialog");
-					helpDialog.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-					//setTitle( "Tabbed Pane Application" );
-					//setSize( 500, 500 );
-					//setBackground( Color.gray );
+			if(e.getSource()==help){
+				JFrame helpDialog = new JFrame();
+				helpDialog.setSize(1000, 1000);
+				helpDialog.setTitle("HelpDialog");
+				helpDialog.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
-					//JPanel topPanel = new JPanel();
-					//topPanel.setLayout( new BorderLayout() );
-					//getContentPane().add( topPanel );
+				// Create the tab pages
+				createPage1();
+				createPage2();
+				createPage3();
 
-					// Create the tab pages
-					createPage1();
-					createPage2();
-					createPage3();
+				// Create a tabbed pane
+				tabbedPane = new JTabbedPane();
+				tabbedPane.addTab( "Page 1", panel1 );
+				tabbedPane.addTab( "Page 2", panel2 );
+				tabbedPane.addTab( "Page 3", panel3 );
+				helpDialog.add( tabbedPane, BorderLayout.CENTER );
+				helpDialog.setVisible(true);
+			}
+			if(e.getSource()==custom){
+				try {
+					Customization cus = new Customization();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 
-					// Create a tabbed pane
-					tabbedPane = new JTabbedPane();
-					tabbedPane.addTab( "Page 1", panel1 );
-					tabbedPane.addTab( "Page 2", panel2 );
-					tabbedPane.addTab( "Page 3", panel3 );
-					helpDialog.add( tabbedPane, BorderLayout.CENTER );
-					helpDialog.setVisible(true);
-					}
-					
-					if(e.getSource()==custom){
-						try {
-							Customization cus = new Customization();
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					}
-			
 			if(e.getSource()==logout){
 				//logout
 				int reply = JOptionPane.showConfirmDialog(null, 
@@ -308,9 +312,50 @@ JPanel panel_1 = new JPanel();   //panel for various option
 
 			}
 
+			if(e.getSource()==zoomIn){
+
+
+
+				zoom+=1;
+				if(zoom>=6)
+					zoom=6;
+
+				iso.setZoomValue(zoom);
+			}
+
+			if(e.getSource()==(zi)){
+				zi.setMnemonic(KeyEvent.VK_ADD);
+				zi.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, ActionEvent.CTRL_MASK));
+
+				zoom+=1;
+				if(zoom>=6)
+					zoom=6;
+
+				iso.setZoomValue(zoom);
+			}
+
+			if(e.getSource()==(zoomOut)){
+
+				zoom-=1;
+				if(zoom<=1)
+					zoom=1;
+
+				iso.setZoomValue(zoom);
+			}
+
+			if(e.getSource()==(zo)){
+				zo.setMnemonic(KeyEvent.VK_MINUS);
+				zo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, ActionEvent.CTRL_MASK));
+
+				zoom-=1;
+				if(zoom<=1)
+					zoom=1;
+
+				iso.setZoomValue(zoom);
+			}
 			/*if(e.getSource()==yell){
 				 //String getTxt = chatBox.getText();
-				 
+
 				 mainFrame.add(new JComponent() {
 			            public void paintComponent(Graphics g) {
 
@@ -333,8 +378,8 @@ JPanel panel_1 = new JPanel();   //panel for various option
 
 			            }
 			        });
-				   
-				  
+
+
 			}
 
 			if(e.getSource()==about){
@@ -342,23 +387,23 @@ JPanel panel_1 = new JPanel();   //panel for various option
 				aboutDialog.setSize(1000, 1000);
 				aboutDialog.setTitle("aboutDialog");
 				aboutDialog.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				
+
 				//gonna put some pic instead of spongebob
 				ImageIcon info = new ImageIcon("about.jpg");
-				
+
 				JLabel n = new JLabel(info);
 				//aboutDialog.setSize(500, 500);
-				
+
 				aboutDialog.add(n);
 				aboutDialog.setVisible(true);
 			}
 			if(e.getSource()==chat){
 				String getTxt = chatBox.getText();
-				 
+
 				int messageType = JOptionPane.PLAIN_MESSAGE;
- 
+
 				JOptionPane.showMessageDialog(null, getTxt, "Java Programming Forums!!", messageType);
 			}*/
-			}
+		}
 	}
 }
