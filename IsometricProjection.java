@@ -130,6 +130,7 @@ JPanel panel_1 = new JPanel();   //panel for various option
 		this.setVisible(true);
 
 		menuBar = new JMenuBar();
+		this.add(menuBar);
 		setJMenuBar(menuBar);
 
 
@@ -161,6 +162,7 @@ JPanel panel_1 = new JPanel();   //panel for various option
 		sound.addActionListener(new MyHandler());
 		chat.addActionListener(new MyHandler());
 		yell.addActionListener(new MyHandler());
+		custom.addActionListener(new MyHandler());
 	}
 	
 	public void createPage1()
@@ -281,6 +283,14 @@ JPanel panel_1 = new JPanel();   //panel for various option
 					helpDialog.setVisible(true);
 					}
 					
+					if(e.getSource()==custom){
+						try {
+							Customization cus = new Customization();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
 			
 			if(e.getSource()==logout){
 				//logout
