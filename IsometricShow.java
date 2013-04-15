@@ -22,79 +22,74 @@ import javax.swing.JPanel;
 
 
 public class IsometricShow extends JPanel {
-	
+
 	private int scrX = Toolkit.getDefaultToolkit().getScreenSize().width;
 	private int scrY = Toolkit.getDefaultToolkit().getScreenSize().height;
 	Image image;
 	Graphics graphics2D;
 	IsometricTile tile ;
 	Point p;
-	private JButton zoomIn, zoomOut;
-	private JPanel buttonPanel;
 
-	
+	private JPanel buttonPanel;
+	private int zoomValue=1;
+
+
 	public IsometricShow(){
 		this.setBackground(Color.WHITE);
 		this.setSize(scrX/10,scrY/10);
 
-		// Refresh refresh = new Refresh();
-    	//refresh.start();
-        setOpaque(false);
-    
+		Refresh refresh = new Refresh();
+		refresh.start();
+
 	}
-	
-	
-	 public void paintComponent(Graphics g) {
-		
-	          	image = createImage (getWidth(),getHeight());
-	        	graphics2D =  image.getGraphics();
-	            
-	        	p = getMousePosition();
-	                for (int line = 0 ; line<100 ; line++) {
-	                	for (int row = 100; row > 0; row --) {
-	               			tile = new IsometricTile (line,row);
-	               			if (p != null){
-	               				repaint();  // need thread, else stop work if click other button
-	               				if (tile.contains(p)) {
-	               					
-	               					tile.setHighlighted(true);
-	               				 
-	               				}
-	               				
-	               			}
-	               			tile.paintComponent(graphics2D);
-	                	}
-	                }
-	                //set the background to white
-	                g.setColor(Color.WHITE);
-		            g.fillRect(0,0,getWidth(),getHeight());
-	                g.drawImage(image, 0,0,this);
-	              
-	           	}
-	 
-	 class Refresh extends Thread{
-     	public void run(){
-     		while(true){
-	        			try{
-	        				sleep(1);
-	        			}catch(InterruptedException e){
-	        				
-	        			}
-     		repaint();
-     		}
-     	}
-     }
-	 
-	/* public static void main(String[] args) {
-		    JFrame frame = new JFrame();
-		    frame.getContentPane().add(new IsometricShow());
+	public void setZoomValue(int zoomV){
+		this.zoomValue = zoomV;
+	}
 
-		    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		    frame.setSize(Toolkit.getDefaultToolkit().getScreenSize().width,Toolkit.getDefaultToolkit().getScreenSize().height);
-		    
-		    frame.setVisible(true);
-		  }*/
+	public int getZoomValue(){
+		return zoomValue;
+	}
 
-	 
-	 
+	public void paintComponent(Graphics g) {
+
+		image = createImage (getWidth(),getHeight());
+		graphics2D =  image.getGraphics();
+
+		p = getMousePosition();
+		for (int line = 0 ; line<100 ; line++) {
+			for (int row = 100; row > 0; row --) {
+				tile = new IsometricTile (line,row,zoomValue);
+				if (p != null){
+					repaint();  // need thread, else stop work if click other button
+					if (tile.contains(p)) {
+
+						tile.setHighlighted(true);
+
+					}
+
+				}
+				tile.paintComponent(graphics2D);
+
+			}
+		}
+
+
+		g.drawImage(image, 0,0,this);
+
+	}
+
+	class Refresh extends Thread{
+		public void run(){
+			while(true){
+				try{
+					sleep(1);
+				}catch(InterruptedException e){
+
+				}
+				repaint();
+			}
+		}
+	}
+
+
 }
