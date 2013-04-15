@@ -19,15 +19,21 @@ import javax.swing.JMenuItem;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
@@ -41,27 +47,11 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 
-
-
-
-
-
-
-
 public class icePort extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
 	private JPasswordField passwordField;
-	private JMenuBar menuBar;
-	private JMenu function;
-	
-	//panel for help
-	private JPanel panel1;
-	 private JPanel panel2;
-	 private JPanel panel3;
-    
-	private JMenuItem quit, REFRESH_INTERVAL_item,help,about;
 	private JButton btnLogIn,bAlien;
 	
 
@@ -148,31 +138,6 @@ public class icePort extends JFrame {
                  System.exit(0);
         }});
     
-		
-		
-		 menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
-		
-		 function = new JMenu("File");
-		menuBar.add(function);
-		
-		 REFRESH_INTERVAL_item = new JMenuItem("Refresh Interval");
-		function.add(REFRESH_INTERVAL_item);
-		
-		 quit = new JMenuItem("Exit");
-		function.add(quit);
-		
-		JMenu mntmAboutWindow = new JMenu("About");
-		menuBar.add(mntmAboutWindow);
-		
-		about = new JMenuItem("About window");
-		mntmAboutWindow.add(about);
-		
-		JMenu mntmHelpWindow  = new JMenu("Help (F1)");
-		menuBar.add(mntmHelpWindow );
-		
-		help = new JMenuItem("Help Window");
-		mntmHelpWindow .add(help);
 		addListener();
 		
 		
@@ -194,47 +159,9 @@ public class icePort extends JFrame {
 		
 }
 	
-	//create panel for the help
-			public void createPage1()
-			 {
-			panel1 = new JPanel();
-			 panel1.setLayout( null );
-			 JLabel label1 = new JLabel( "Logging In/Out" );
-			label1.setBounds( 10, 15, 150, 20 );
-			 panel1.add( label1 );
-			 }
-
-			 public void createPage2()
-			 {
-				 panel2 = new JPanel();
-			 panel2.setLayout( new BorderLayout() );
-
-			 panel2.add( new JButton( "North" ), BorderLayout.NORTH );
-			 panel2.add( new JButton( "South" ), BorderLayout.SOUTH );
-			 panel2.add( new JButton( "East" ), BorderLayout.EAST );
-			 panel2.add( new JButton( "West" ), BorderLayout.WEST );
-			panel2.add( new JButton( "Center" ), BorderLayout.CENTER );
-			 }
-
-			 public void createPage3()
-			 {
-			 panel3= new JPanel();
-			 panel3.setLayout( new GridLayout(3, 2,5,5));
-
-			 panel3.add( new JLabel( "Field 1:" ) );
-			 panel3.add( new TextArea() );
-			panel3.add( new JLabel( "Field 2:" ) );
-			panel3.add( new TextArea() );
-			panel3.add( new JLabel( "Field 3:" ) );
-			 panel3.add( new TextArea() );
-			 }
+	
 	private void addListener() {
-
-		//quitting the program
-		quit.addActionListener(new MyHandler());
-		help.addActionListener(new MyHandler());
-		about.addActionListener(new MyHandler());
-		REFRESH_INTERVAL_item.addActionListener(new MyHandler());
+		
 		btnLogIn.addActionListener(new MyHandler());
 		bAlien.addActionListener(new MyHandler());
 
@@ -244,74 +171,13 @@ class MyHandler implements ActionListener{
 
 	
 		public void actionPerformed(ActionEvent e){
-			if(e.getSource() ==quit){
-				String message = "Are you sure you want to exit the ICEWORLD?";
-				int reply = JOptionPane.showConfirmDialog(null, message,"Confirmation", JOptionPane.YES_NO_OPTION);
 				
-				if (reply == JOptionPane.YES_OPTION)
-                {
-                    System.exit(0);
-                }
-				
-				
-			}
-
-			if(e.getSource()==about){
-			JFrame aboutDialog = new JFrame();
-				aboutDialog.setSize(1000, 1000);
-				aboutDialog.setTitle("aboutDialog");
-				aboutDialog.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				
-				//gonna put some pic instead of spongebob
-				ImageIcon info = new ImageIcon("spongebob.jpg");
-				
-				JLabel n = new JLabel(info);
-				//aboutDialog.setSize(500, 500);
-				
-				aboutDialog.add(n);
-				aboutDialog.setVisible(true);
-			}
-
-			if(e.getSource()==help){
-				 JFrame helpJFrame = new JFrame("Help");
-					final JDialog helpJDialog = new JDialog(helpJFrame,"Help");
-					 JTabbedPane helpTab = new JTabbedPane();
-					    JPanel helpPanel = new JPanel();
-			helpJDialog.getContentPane().setLayout(new BorderLayout());
-					    helpPanel.add(helpTab, BorderLayout.CENTER);
-				    
-					 // Create the tab pages
-					    createPage1();
-					    createPage2();
-					    createPage3();
-					 
-					//create a tabbed pane
-					helpTab.addTab( "Page 1", panel1 );
-					helpTab.addTab( "Page 2", panel2 );
-					helpTab.addTab( "Page 3", panel3 );
-					
-					helpJDialog.setBounds(0,0,1200,600);
-					helpJDialog.setModal(true);
-					helpJDialog.getContentPane().add(helpPanel,BorderLayout.CENTER);
-					helpJDialog.setPreferredSize(new Dimension(1000,600));
-				//	helpJDialog.pack();
-				   helpJDialog.setVisible(true);
-					
-				
-				/*	JDialog helpDialog = new JDialog();	
-				helpDialog.setBounds(10,10,300,300);
-				helpDialog.setModal(true);
-				helpDialog.setLocationRelativeTo(null);
-				helpDialog.setVisible(true);*/
-				}
-			
 			if(e.getSource()==btnLogIn){
 				// if the password is right
 	String utest = textField.getText();
 	String passt = passwordField.getText();
 	int count =0; int sum =0;
 	
-			
 	
 	if(utest.equals("peeranut")&&  passt.equals("1234")){
 	
@@ -361,7 +227,7 @@ class MyHandler implements ActionListener{
 				
 			
 
-			if(e.getSource()== REFRESH_INTERVAL_item){
+		/*	if(e.getSource()== REFRESH_INTERVAL_item){
 				// Open an internal frame when the item is selected :
 				JInternalFrame RIframe = new JInternalFrame("Setting the refresh interval", true, true, true, true);	
 				RIframe.setBounds(500,100,300,300);
@@ -409,7 +275,7 @@ class MyHandler implements ActionListener{
 	c.add(RIframe);
 	RIframe.setVisible(true);
 
-}
+}*/
 	}
 }}
 
