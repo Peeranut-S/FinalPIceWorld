@@ -40,7 +40,7 @@ public class IsometricProjection extends JFrame{
 	private JMenuBar menuBar;
 	private JMenuItem help,about,quit, zi,zo;
 	private JPanel mini;
-	
+	Audio song;
 	// refreshing states attributes
 	int refresh_interval=1;
 	JMenuItem REFRESH_INTERVAL_item;
@@ -56,7 +56,8 @@ public class IsometricProjection extends JFrame{
 		this.add(menuBar);
 
 		setJMenuBar(menuBar);
-		//this.setBackground(Color.WHITE);
+		song = new Audio("bgm.wav");
+		this.setBackground(Color.WHITE);
 		iso = new  IsometricShow();
 
 
