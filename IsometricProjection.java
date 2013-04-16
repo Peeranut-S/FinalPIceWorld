@@ -1,11 +1,14 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +17,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 
+import icePort.MyHandler;
 import iceworld.given.*;
 import javax.swing.*;
 import javax.swing.plaf.TabbedPaneUI;
@@ -34,8 +38,14 @@ public class IsometricProjection extends JFrame{
 	IsometricShow iso;
 	JTextField chatBox;
 	private JMenuBar menuBar;
-	private JMenuItem help,about,quit, REFRESH_INTERVAL_item,zi,zo;
+	private JMenuItem help,about,quit, zi,zo;
 	private JPanel mini;
+	
+	// refreshing states attributes
+	int refresh_interval=1;
+	JMenuItem REFRESH_INTERVAL_item;
+	static StateFetching statefetching;
+	
 
 	public static void main(String[] a) {
 		IsometricProjection mainFrame = new IsometricProjection();
@@ -143,21 +153,27 @@ public class IsometricProjection extends JFrame{
 		zi = new JMenuItem("ZoomIn(+)");
 		zo = new JMenuItem("ZoomIn(-)");
 		mntmAboutWindow.add(zi); mntmAboutWindow.add(zo);
+		mntmAboutWindow.addSeparator();
 
 
 		about = new JMenuItem("About");
 		mntmAboutWindow.add(about);
+		mntmAboutWindow.addSeparator();
 
 
 		help = new JMenuItem("Help(F1)");
 		mntmAboutWindow.add(help);
 		help.setAccelerator(KeyStroke.getKeyStroke("F1"));
+		mntmAboutWindow.addSeparator();
 
 		REFRESH_INTERVAL_item = new JMenuItem("Refresh Interval");
 		mntmAboutWindow.add(REFRESH_INTERVAL_item);
+		mntmAboutWindow.addSeparator();
 
 		quit= new JMenuItem("Quit");
 		mntmAboutWindow.add(quit);
+		
+		
 		addListener();
 
 	}
@@ -176,6 +192,7 @@ public class IsometricProjection extends JFrame{
 		zoomOut.addActionListener(new MyHandler());
 		zi.addActionListener(new MyHandler());
 		zo.addActionListener(new MyHandler());
+		REFRESH_INTERVAL_item.addActionListener(new MyHandler());
 	}
 
 	public void createPage1()
@@ -238,6 +255,10 @@ public class IsometricProjection extends JFrame{
 		}
 	}
 
+	
+	
+	
+	
 	class MyHandler implements ActionListener{
 
 
@@ -252,6 +273,8 @@ public class IsometricProjection extends JFrame{
 					System.exit(0);
 				}
 			}
+			
+			
 			if(e.getSource()==about){
 				JFrame aboutDialog = new JFrame();
 				aboutDialog.setSize(1450, 1450);
@@ -267,6 +290,8 @@ public class IsometricProjection extends JFrame{
 				aboutDialog.setVisible(true);
 			}
 
+			
+			
 			if(e.getSource()==help){
 				JFrame helpDialog = new JFrame();
 				helpDialog.setSize(1000, 1000);
@@ -287,6 +312,8 @@ public class IsometricProjection extends JFrame{
 				helpDialog.add( tabbedPane, BorderLayout.CENTER );
 				helpDialog.setVisible(true);
 			}
+			
+			
 			if(e.getSource()==custom){
 				try {
 					Customization cus = new Customization();
@@ -353,6 +380,48 @@ public class IsometricProjection extends JFrame{
 
 				iso.setZoomValue(zoom);
 			}
+			
+			
+			if(e.getSource()== REFRESH_INTERVAL_item){
+				// Open an internal frame when the item is selected :
+				JInternalFrame RIframe = new JInternalFrame("Setting the refresh interval", true, true, true, true);	
+				RIframe.setBounds(500,100,300,300);
+			
+				JPanel panel= (JPanel) RIframe.getContentPane();
+				
+				// In the frame, we can select the refresh interval via a combo box : 
+				JTextArea text = new JTextArea("Select the refresh interval of the ICE World :"); 
+				final JComboBox combo = new JComboBox();
+				combo.setBounds(new Rectangle(2, 2, 2, 2)); 
+				
+				
+				for(int i=1; i<=10; i++){
+					combo.addItem(i); 	// adding the elements of the combo			
+				}	
+				
+				combo.addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent e)
+					{
+						refresh_interval= (Integer) combo.getSelectedItem();
+						statefetching.setREFRESH_INTERVAL(refresh_interval);
+					}
+				});
+				
+				combo.setSelectedItem(refresh_interval);
+				
+				
+				RIframe.setLayout( new GridLayout(2,1,5,5));
+
+				panel.add(text, BorderLayout.CENTER);
+				panel.add(combo, BorderLayout.CENTER);
+				panel.setVisible(true);
+				Container c = getContentPane();
+				c.add(RIframe);
+				RIframe.setVisible(true);
+			}	
+			
+			
 			/*if(e.getSource()==yell){
 				 //String getTxt = chatBox.getText();
 
