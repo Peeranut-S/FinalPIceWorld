@@ -41,7 +41,8 @@ public class StateFetching implements Runnable{
 	
 	static int REFRESH_INTERVAL=10000;
 	protected Thread thread;
-
+	long last_change;
+	String weatherConditon; 
 		
 	public void start(){
 		
@@ -147,11 +148,11 @@ int testing =1;
 	System.out.println("Key in weather is:"+weatherKey);
 	
 	String last_change_String = ""+weather.get("last_change");
-	long last_change = Long.parseLong(last_change_String);
+	last_change = Long.parseLong(last_change_String);
 	System.out.println("Last weather time change: "+last_change);
 	
 	
-	String weatherConditon = (String) weather.get("condition");
+	weatherConditon = (String) weather.get("condition");
 	System.out.println("weather condition: "+weatherConditon);
 	
 	System.out.println();
@@ -299,6 +300,14 @@ int testing =1;
     public void setREFRESH_INTERVAL(int interval){
       REFRESH_INTERVAL=interval*1000;
    }
+    
+    public String getWeatherCondition(){
+    	return weatherConditon;
+    }
+    
+    public long getLastWeatherChange(){
+    	return last_change;
+    }
 	
     
 }
