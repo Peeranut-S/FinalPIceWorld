@@ -33,8 +33,10 @@ public class IsometricProjection extends JFrame{
 	private    JPanel    panel3;
 	icePort log ;
 	
-	MyIcetizen tester = new MyIcetizen();
-	ICEWorldImmigration imm = new ICEWorldImmigration(tester);
+
+	
+//MyIcetizen tester = new MyIcetizen() ;
+//ICEWorldImmigration imm = new ICEWorldImmigration(tester);
 
 	IsometricShow iso;
 	JTextField chatBox;
@@ -42,8 +44,8 @@ public class IsometricProjection extends JFrame{
 	private JMenuItem help,about,quit, REFRESH_INTERVAL_item,zi,zo;
 	private JPanel mini;
 	Audio song;
-	int refresh_interval=1;
-	static StateFetching statefetching;
+	//int refresh_interval=1;
+	//static StateFetching statefetching;
 	public static void main(String[] a) {
 		IsometricProjection mainFrame = new IsometricProjection();
 	}
@@ -52,13 +54,16 @@ public class IsometricProjection extends JFrame{
 	public IsometricProjection() {
 		
 		
-		super("My Frame");
+		super("ICEWORLD");
+		
+	
 		
 		menuBar = new JMenuBar();
 		this.add(menuBar);
 
 		setJMenuBar(menuBar);
 		song = new Audio("bgm.wav");
+		
 		
 		this.setBackground(Color.WHITE);
 		iso = new  IsometricShow();
@@ -200,6 +205,7 @@ public class IsometricProjection extends JFrame{
 		panel1.setBackground(new Color(250,251,253)); 
 		try {
 			JEditorPane htmlPane = new JEditorPane();
+			htmlPane.setSize(800,600);
 			htmlPane.setPage(TabbedPane.class.getResource("index.html"));
 			htmlPane.setEditable(false);
 			JScrollPane scrollpane = new JScrollPane(htmlPane);
@@ -220,6 +226,7 @@ public class IsometricProjection extends JFrame{
 		panel2.setBackground(new Color(250,251,253)); 
 		try {
 			JEditorPane htmlPane2 = new JEditorPane();
+			htmlPane2.setSize(800,600);
 			htmlPane2.setPage(TabbedPane.class.getResource("index2.html"));
 			htmlPane2.setEditable(false);
 			JScrollPane scrollpane = new JScrollPane(htmlPane2);
@@ -240,6 +247,7 @@ public class IsometricProjection extends JFrame{
 		panel3.setBackground(new Color(250,251,253)); 
 		try {
 			JEditorPane htmlPane3 = new JEditorPane();
+			htmlPane3.setSize(800,600);
 			htmlPane3.setPage(TabbedPane.class.getResource("index3.html"));
 			htmlPane3.setEditable(false);
 			JScrollPane scrollpane = new JScrollPane(htmlPane3);
@@ -275,7 +283,7 @@ public class IsometricProjection extends JFrame{
 				//aboutDialog.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
-				ImageIcon info = new ImageIcon("/Users/ZethaRia/Desktop/about.jpg");
+				ImageIcon info = new ImageIcon("about.jpg");
 
 				JLabel n = new JLabel(info);
 
@@ -285,9 +293,9 @@ public class IsometricProjection extends JFrame{
 
 			if(e.getSource()==help){
 				JFrame helpDialog = new JFrame();
-				helpDialog.setSize(1000, 1000);
+				helpDialog.setSize(1450, 1000);
 				helpDialog.setTitle("HelpDialog");
-				helpDialog.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				
 
 
 				// Create the tab pages
@@ -322,6 +330,7 @@ public class IsometricProjection extends JFrame{
 						//System.out.println("Logout OK");
 					//}
 					//System.exit(0);
+					song.stop();
 					dispose();
 				
 				log = new icePort();
@@ -398,7 +407,7 @@ public class IsometricProjection extends JFrame{
 			}
 			
 			
-			/*if(e.getSource()== REFRESH_INTERVAL_item){
+		/*	if(e.getSource()== REFRESH_INTERVAL_item){
 				// Open an internal frame when the item is selected :
 				JInternalFrame RIframe = new JInternalFrame("Setting the refresh interval", true, true, true, true);	
 				RIframe.setBounds(500,100,300,300);
@@ -435,7 +444,7 @@ public class IsometricProjection extends JFrame{
 				Container c = getContentPane();
 				c.add(RIframe);
 				RIframe.setVisible(true);
-			}	*/
+			}*/	
 		}
 	}
 }
