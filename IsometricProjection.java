@@ -17,7 +17,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 
-import icePort.MyHandler;
 import iceworld.given.*;
 import javax.swing.*;
 import javax.swing.plaf.TabbedPaneUI;
@@ -32,31 +31,35 @@ public class IsometricProjection extends JFrame{
 	private    JPanel    panel1;
 	private    JPanel    panel2;
 	private    JPanel    panel3;
-	//MyIcetizen ice = new MyIcetizen();
-	//ICEWorldImmigration immigrate = new ICEWorldImmigration(ice);
+	icePort log ;
+	
+	MyIcetizen tester = new MyIcetizen();
+	ICEWorldImmigration imm = new ICEWorldImmigration(tester);
 
 	IsometricShow iso;
 	JTextField chatBox;
 	private JMenuBar menuBar;
-	private JMenuItem help,about,quit, zi,zo;
+	private JMenuItem help,about,quit, REFRESH_INTERVAL_item,zi,zo;
 	private JPanel mini;
 	Audio song;
-	// refreshing states attributes
 	int refresh_interval=1;
-	JMenuItem REFRESH_INTERVAL_item;
 	static StateFetching statefetching;
-	
-
 	public static void main(String[] a) {
 		IsometricProjection mainFrame = new IsometricProjection();
 	}
+	
+	
 	public IsometricProjection() {
+		
+		
 		super("My Frame");
+		
 		menuBar = new JMenuBar();
 		this.add(menuBar);
 
 		setJMenuBar(menuBar);
 		song = new Audio("bgm.wav");
+		
 		this.setBackground(Color.WHITE);
 		iso = new  IsometricShow();
 
@@ -154,27 +157,21 @@ public class IsometricProjection extends JFrame{
 		zi = new JMenuItem("ZoomIn(+)");
 		zo = new JMenuItem("ZoomIn(-)");
 		mntmAboutWindow.add(zi); mntmAboutWindow.add(zo);
-		mntmAboutWindow.addSeparator();
 
 
 		about = new JMenuItem("About");
 		mntmAboutWindow.add(about);
-		mntmAboutWindow.addSeparator();
 
 
 		help = new JMenuItem("Help(F1)");
 		mntmAboutWindow.add(help);
 		help.setAccelerator(KeyStroke.getKeyStroke("F1"));
-		mntmAboutWindow.addSeparator();
 
 		REFRESH_INTERVAL_item = new JMenuItem("Refresh Interval");
 		mntmAboutWindow.add(REFRESH_INTERVAL_item);
-		mntmAboutWindow.addSeparator();
 
 		quit= new JMenuItem("Quit");
 		mntmAboutWindow.add(quit);
-		
-		
 		addListener();
 
 	}
@@ -256,10 +253,6 @@ public class IsometricProjection extends JFrame{
 		}
 	}
 
-	
-	
-	
-	
 	class MyHandler implements ActionListener{
 
 
@@ -271,11 +264,10 @@ public class IsometricProjection extends JFrame{
 
 				if (rep == JOptionPane.YES_OPTION)
 				{
+					
 					System.exit(0);
 				}
 			}
-			
-			
 			if(e.getSource()==about){
 				JFrame aboutDialog = new JFrame();
 				aboutDialog.setSize(1450, 1450);
@@ -291,8 +283,6 @@ public class IsometricProjection extends JFrame{
 				aboutDialog.setVisible(true);
 			}
 
-			
-			
 			if(e.getSource()==help){
 				JFrame helpDialog = new JFrame();
 				helpDialog.setSize(1000, 1000);
@@ -313,8 +303,6 @@ public class IsometricProjection extends JFrame{
 				helpDialog.add( tabbedPane, BorderLayout.CENTER );
 				helpDialog.setVisible(true);
 			}
-			
-			
 			if(e.getSource()==custom){
 				try {
 					Customization cus = new Customization();
@@ -330,9 +318,15 @@ public class IsometricProjection extends JFrame{
 						"Do you want to log out from ICEWORLD?", "ICEWORLD", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (reply == JOptionPane.YES_OPTION)
 					//do log out
-					System.exit(0);
-			}
-
+					//if (imm.logout()){
+						//System.out.println("Logout OK");
+					//}
+					//System.exit(0);
+					dispose();
+				
+				log = new icePort();
+				log.setVisible(true);
+		}
 
 			if(e.getSource()==sound){
 
@@ -381,9 +375,30 @@ public class IsometricProjection extends JFrame{
 
 				iso.setZoomValue(zoom);
 			}
+			if(e.getSource()==yell){
+				
+	
+			String getTxt = chatBox.getText();
+			if(getTxt.length()>10){
+				getTxt = getTxt.substring(0,10);
+			}
+			iso.setText(getTxt);
+			iso.setYell();
+			}
+				
+			
+			if(e.getSource()==chat){
+				String getTxt = chatBox.getText();
+				if(getTxt.length()>100){
+					getTxt = getTxt.substring(0,100);}
+				iso.setText(getTxt);
+				iso.setTalk();
+
+			
+			}
 			
 			
-			if(e.getSource()== REFRESH_INTERVAL_item){
+			/*if(e.getSource()== REFRESH_INTERVAL_item){
 				// Open an internal frame when the item is selected :
 				JInternalFrame RIframe = new JInternalFrame("Setting the refresh interval", true, true, true, true);	
 				RIframe.setBounds(500,100,300,300);
@@ -420,60 +435,7 @@ public class IsometricProjection extends JFrame{
 				Container c = getContentPane();
 				c.add(RIframe);
 				RIframe.setVisible(true);
-			}	
-			
-			
-			/*if(e.getSource()==yell){
-				 //String getTxt = chatBox.getText();
-
-				 mainFrame.add(new JComponent() {
-			            public void paintComponent(Graphics g) {
-
-			                // Some parameters.
-			            	String text = chatBox.getText();
-			                int centerX = 150, centerY = 100;
-			                int ovalWidth = 200, ovalHeight = 100;
-
-			                // Draw oval
-			                g.setColor(Color.BLUE);
-			                g.fillOval(centerX-ovalWidth/2, centerY-ovalHeight/2,
-			                           ovalWidth, ovalHeight);
-
-			                // Draw centered text
-			                FontMetrics fm = g.getFontMetrics();
-			                double textWidth = fm.getStringBounds(text, g).getWidth();
-			                g.setColor(Color.WHITE);
-			                g.drawString(text, (int) (centerX - textWidth/2),
-			                                   (int) (centerY + fm.getMaxAscent() / 2));
-
-			            }
-			        });
-
-
-			}
-
-			if(e.getSource()==about){
-				JFrame aboutDialog = new JFrame();
-				aboutDialog.setSize(1000, 1000);
-				aboutDialog.setTitle("aboutDialog");
-				aboutDialog.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-				//gonna put some pic instead of spongebob
-				ImageIcon info = new ImageIcon("about.jpg");
-
-				JLabel n = new JLabel(info);
-				//aboutDialog.setSize(500, 500);
-
-				aboutDialog.add(n);
-				aboutDialog.setVisible(true);
-			}
-			if(e.getSource()==chat){
-				String getTxt = chatBox.getText();
-
-				int messageType = JOptionPane.PLAIN_MESSAGE;
-
-				JOptionPane.showMessageDialog(null, getTxt, "Java Programming Forums!!", messageType);
-			}*/
+			}	*/
 		}
 	}
 }
