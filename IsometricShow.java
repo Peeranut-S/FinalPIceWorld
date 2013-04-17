@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -19,7 +20,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,52 +37,53 @@ import javax.swing.JPanel;
 
 
 public class IsometricShow extends JPanel {
-
 	
-	MyIcetizen tester = new MyIcetizen();
-
-	ICEWorldImmigration imm = new ICEWorldImmigration(tester);
 	
-
 	private int scrX = Toolkit.getDefaultToolkit().getScreenSize().width;
 	private int scrY = Toolkit.getDefaultToolkit().getScreenSize().height;
 	private int OriX = scrX/2;
 	private int OriY= scrX/2;
 	private int targetX;
 	private int targetY;
-	private String currentWeather;
+	
 	
 	private String text; 
 	boolean yell = false; //--
 	boolean talk = false;  //--
 	private int TALK_VISIBLE_DURATION = 5000;   //--
 	Image image;
-	Graphics graphics2D;
+	Graphics graphics2D,br;
 	IsometricTile tile ;
 	Point p; //act as target
 	Point current; //act as original point
+	Point temp; //for change
 
 	private JPanel buttonPanel;
 	private int zoomValue=1;
 
 
 	public IsometricShow(){
+		
+		
+		
 		this.setBackground(Color.WHITE);
 		this.setSize(scrX/10,scrY/10);
 		current =new Point(300,300);//--
-		
-		
+		//======================================    =========================================================
+		//====				Handler class==				=============================
+		//===============================================================================================
 		addMouseListener(new MouseAdapter(){
 			public void mousePressed(MouseEvent e){   //for click on target to get the position
 				p.x = e.getX();
 				p.y=e.getY();
+				temp = current;
+				current = p;
 				System.out.println(p.x);
 				System.out.println(p.y);
 			}
 			});
-		
-		Refresh refresh = new Refresh();
-		refresh.start();
+			
+	
 
 	}
 	public void setZoomValue(int zoomV){
@@ -89,7 +98,9 @@ public class IsometricShow extends JPanel {
 
 		image = createImage (getWidth(),getHeight());
 		graphics2D =  image.getGraphics();
-
+		
+	     Refresh refresh = new Refresh();
+			refresh.start();
 		p = getMousePosition();
 		for (int line = 0 ; line<100 ; line++) {
 			for (int row = 100; row > 0; row --) {
@@ -106,46 +117,60 @@ public class IsometricShow extends JPanel {
 				tile.paintComponent(graphics2D);
 
 			}
+
+			
 		}
-		
+	
 		g.setColor(Color.WHITE);  //--
         g.fillRect(0,0,getWidth(),getHeight());//--
-      
-		g.drawImage(image, 0,0,this);
-		//drawForegroundWeather(g);
-		 
-		//if(talk==true){
-		  //      talking.paintTalking(g,this.getCurrent().x, this.getCurrent().y);
-		    //    }
+   
+        g.drawImage(image, 0,0,this);
+	
+				
 		paintYell(g);
 		paintTalk(g,TALK_VISIBLE_DURATION,current);
+	
+		
 	}
+		
+	
+	
+	
+	
+	
+	//========================       ========================       ========================       
+	  //======================== TALK METHOD================================================       
 		
 	
 	
 	public void paintTalk(Graphics g, final int TALK_VISIBLE_DURATION,Point charPos){
 		 if(talk==true){
+			
+		       AffineTransform affinetransform = new AffineTransform();     
+			FontRenderContext frc = new FontRenderContext(affinetransform,true,true);     
+			Font font = this.getFont();			
+
+			
+			
+	
+			int textwidth = (int)(font.getStringBounds(text, frc).getWidth());
+			int textheight = (int)(font.getStringBounds(text, frc).getHeight());
 			 
-				 int rectWidth = 100*zoomValue, rectHeight = 50*zoomValue;
-				 
-				 g.setColor(Color.white);
-				 g.fillRect(charPos.x, charPos.y,rectWidth, rectHeight);
-				 
-			 
-		        FontMetrics ft = g.getFontMetrics();
-		        double textWidth = ft.getStringBounds(text, g).getWidth();
-		        g.setColor(Color.BLACK);
-		        g.drawString(text, ((int) charPos.x),
-		        					(int) (charPos.y)+20);
+			
+			g.setColor(Color.WHITE);
+			g.fillRoundRect(charPos.x, charPos.y-textheight, textwidth+10, textheight+5, 5, 5);
+			g.setColor(Color.BLACK);
+			g.drawString(text, charPos.x+5, charPos.y);	
+		   
 		        (new DisplayBubble ()).start();
 		        
 		 }
 		
 		        
-		       // if (imm.talk(text)){
-		        //	System.out.println("Talk OK");
-		        	//}
-		        
+		    
+		if(icePort.immigration.talk(text))   {
+			System.out.println("Talk OK");
+	}
 		
 	}
 	//========================       ========================       ========================       
@@ -156,7 +181,7 @@ public class IsometricShow extends JPanel {
         	// Some parameters.
             //String text = "Some Label";
             int centerX = 500, centerY = 300;
-            int ovalWidth = 200*zoomValue, ovalHeight = 100*zoomValue;
+            int ovalWidth = 400*zoomValue, ovalHeight = 250*zoomValue;
 
             // Draw oval
             g.setColor(Color.BLUE);
@@ -171,17 +196,19 @@ public class IsometricShow extends JPanel {
                                (int) (centerY + fm.getMaxAscent() / 2));//--
             //this.yell=false;    //to set yell back so that it does not show permanently
             (new DisplayYell ()).start();
-            if (imm.yell("Hello")){
-            	System.out.println("Yell OK");
-            	}
-	
-	
+         
 	}
+         if (icePort.immigration.yell("Hello")){
+            	System.out.println("Yell OK");
+           	}
+	
+	
+	//}
 		
 	}
 	
    //========================       ========================       ========================       
-	//    ========================       ========================       =====================
+	//    ========================     SET + GET     =====================
 			
 	public void targetToCurrent(Point target){   //once click and moved [update] the target point to current point
 		this.current.x = target.x;
@@ -210,48 +237,13 @@ public class IsometricShow extends JPanel {
 		this.talk = true;
 	}
 	
-	public void drawForegroundWeather(Graphics g){
-		switch (currentWeather){
-			case "Sunny":
-				Weather.sunny(g, this.getWidth(), this.getHeight());
-				break;
-			case "Cloudy":
-				System.out.println("It's cloudy");
-				Weather.cloudy(g, this.getWidth(), this.getHeight());
-				break;
-			case "Raining":
-				Weather.raining(g, this.getWidth(), this.getHeight());
-				break;
-			case "Snowing":
-				Weather.snowing(g, this.getWidth(), this.getHeight());
-				break;
-			default:
-				System.out.println("it's default");
-				Weather.raining(g, this.getWidth(), this.getHeight());
-			
-		} 
-	}
-	public void drawBackgroundWeather(Graphics g){
-		switch (currentWeather){
-			case "Raining":
-			case "Snowing":
-				Weather.rainingBackground(g, this.getWidth(), this.getHeight());
-			break;
-			case "Cloudy":
-			case "Sunny":
-			default:
-				Weather.sunnyBackground(g, this.getWidth(), this.getHeight());
-			
-		} 
-	
-	}
 	
 	
 	
 	
-	
-	
-	
+//	======================== ======================== ======================== ======================== 
+	//========================  THREADINGGG ======================== ======================== 
+	//======================== ======================== ======================== ======================== 
 	
 	class DisplayYell extends Thread {   // Thread for the talk showing
 		public void run (){
@@ -284,6 +276,8 @@ public class IsometricShow extends JPanel {
 				repaint();
 			}
 		}
+		//======================== ======================== ======================== ======================== 
+		//======================== ======================== ======================== ======================== 
 	}
 
 
